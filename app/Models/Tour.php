@@ -4,7 +4,7 @@ namespace App\Models;
 
 
 use Illuminate\Database\Eloquent\Model;
-use Str;
+use Illuminate\Support\Str;
 
 class Tour extends Model
 {
@@ -20,6 +20,7 @@ class Tour extends Model
         'max_capacity',
         'location',
         'image_url',
+        'is_active',
     ];
 
     // Relationship: A tour has many bookings
@@ -35,5 +36,20 @@ class Tour extends Model
         static::creating(function ($tour) {
             $tour->slug = Str::slug($tour->title);
         });
+    }
+
+    public function scopeActive($query){
+        return $query->where('is_active', true);
+    }
+
+    public function getExcerptAttribute(): string
+    {
+        return substr($this->description, 0, 30)."...";
+    }
+
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
     }
 }
