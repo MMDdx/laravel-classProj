@@ -62,4 +62,9 @@ class BookingController extends Controller
     {
         //
     }
+    public function cancel(Booking $booking)
+    {
+        $booking->update(['status' => 'cancelled']);
+        return redirect()->back()->with('success', 'رزرو لغو شد.');
+    }
 }
