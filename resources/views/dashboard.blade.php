@@ -13,6 +13,15 @@
                 <div class="p-6 text-gray-900">
                     {{ __("به پنل کاربری خوش آمدید، ") }} {{ Auth::user()->name }}!
                 </div>
+                @auth
+                    @if(auth()->user()->is_admin)
+                        <div class="border-t border-gray-200 pt-4 mt-4">
+                            <div class="px-4 text-xs text-gray-500 uppercase">مدیریت</div>
+                            <a href="{{ route('admin.users.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">مدیریت کاربران</a>
+                            <a href="{{ route('admin.tours.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">مدیریت تورها</a>
+                        </div>
+                    @endif
+                @endauth
             </div>
 
             <!-- دکمه‌های عملیاتی مرتبط با پروژه -->

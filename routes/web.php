@@ -1,10 +1,11 @@
 <?php
 
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TourController;
 use App\Http\Controllers\BookingController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Admin\TourController as AdminTourController;
 // This single line loads all of Breeze's authentication routes
 require __DIR__.'/auth.php';
 
@@ -12,6 +13,14 @@ require __DIR__.'/auth.php';
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    // User management
+    Route::resource('users', UserController::class)->only(['index', 'destroy']);
+
+    // Tour management
+    Route::resource('tours', AdminTourController::class);
 });
 
 Route::middleware(['auth'])->group(function () {

@@ -23,6 +23,24 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
+
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'is_admin',        // ← add this
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'is_admin' => 'boolean',   // ← add this (recommended)
+    ];
     public function bookings(): HasMany
     {
         return $this->hasMany(Booking::class);
