@@ -34,13 +34,19 @@
                 <span class="text-xs text-gray-400 mr-2 hidden sm:inline">Tourly</span>
             </div>
 
-            <!-- دکمه‌های ورود و ثبت‌نام -->
+            <!-- دکمه‌های ورود/ثبت‌نام / داشبورد / خروج -->
             <div class="flex items-center space-x-4 space-x-reverse">
                 @if (Route::has('login'))
                     @auth
                         <a href="{{ url('/dashboard') }}" class="text-gray-700 hover:text-indigo-600 transition font-medium">
                             <i class="fas fa-tachometer-alt ml-1"></i> داشبورد
                         </a>
+                        <form method="POST" action="{{ route('logout') }}" class="inline">
+                            @csrf
+                            <button type="submit" class="text-gray-700 hover:text-red-600 transition font-medium">
+                                <i class="fas fa-sign-out-alt ml-1"></i> خروج
+                            </button>
+                        </form>
                     @else
                         <a href="{{ route('login') }}" class="text-gray-700 hover:text-indigo-600 transition font-medium">
                             <i class="fas fa-sign-in-alt ml-1"></i> ورود
@@ -108,7 +114,7 @@
     </div>
 </section>
 
-<!-- تورهای محبوب (پیش‌نمایش استاتیک) -->
+<!-- تورهای محبوب (داینامیک از دیتابیس) -->
 <section id="tours" class="py-16 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
@@ -116,42 +122,28 @@
             <p class="text-gray-500 mt-2">مقاصد فوق‌العاده برای سفر شما</p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
-                <img src="https://images.unsplash.com/photo-1530789253388-582c48173054?w=500&h=300&fit=crop" alt="استانبول" class="w-full h-48 object-cover">
-                <div class="p-5">
-                    <div class="flex justify-between items-center">
-                        <h3 class="text-xl font-bold text-gray-800">تور استانبول</h3>
-                        <span class="text-indigo-600 font-bold">۴,۲۰۰,۰۰۰ تومان</span>
+            @forelse($popularTours as $tour)
+                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
+                    <img src="{{ $tour->image_url ?? 'https://images.unsplash.com/photo-1530789253388-582c48173054?w=500&h=300&fit=crop' }}"
+                         alt="{{ $tour->title }}"
+                         class="w-full h-48 object-cover">
+                    <div class="p-5">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-xl font-bold text-gray-800">{{ $tour->title }}</h3>
+                            <span class="text-indigo-600 font-bold">{{ number_format($tour->price) }} تومان</span>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-2 line-clamp-2">{{ $tour->description }}</p>
+                        <a href="{{ route('tours.show', $tour) }}" class="mt-4 inline-block w-full text-center bg-indigo-100 text-indigo-700 py-2 rounded-lg font-medium hover:bg-indigo-200 transition">
+                            جزئیات و رزرو
+                        </a>
                     </div>
-                    <p class="text-gray-500 text-sm mt-2">پرواز مستقیم + هتل ۴ ستاره + صبحانه</p>
-                    <a href="{{ route('register') }}" class="mt-4 inline-block w-full text-center bg-indigo-100 text-indigo-700 py-2 rounded-lg font-medium hover:bg-indigo-200 transition">جزئیات و رزرو</a>
                 </div>
-            </div>
-            <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
-                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=300&fit=crop" alt="کیش" class="w-full h-48 object-cover">
-                <div class="p-5">
-                    <div class="flex justify-between items-center">
-                        <h3 class="text-xl font-bold text-gray-800">تور کیش</h3>
-                        <span class="text-indigo-600 font-bold">۱,۸۰۰,۰۰۰ تومان</span>
-                    </div>
-                    <p class="text-gray-500 text-sm mt-2">اقامت ۳ شب + تفریحات آبی</p>
-                    <a href="{{ route('register') }}" class="mt-4 inline-block w-full text-center bg-indigo-100 text-indigo-700 py-2 rounded-lg font-medium hover:bg-indigo-200 transition">جزئیات و رزرو</a>
-                </div>
-            </div>
-            <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
-                <img src="https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=500&h=300&fit=crop" alt="ونیز" class="w-full h-48 object-cover">
-                <div class="p-5">
-                    <div class="flex justify-between items-center">
-                        <h3 class="text-xl font-bold text-gray-800">تور ونیز</h3>
-                        <span class="text-indigo-600 font-bold">۸,۵۰۰,۰۰۰ تومان</span>
-                    </div>
-                    <p class="text-gray-500 text-sm mt-2">ویزای شنگن + قایق سواری در کانال‌ها</p>
-                    <a href="{{ route('register') }}" class="mt-4 inline-block w-full text-center bg-indigo-100 text-indigo-700 py-2 rounded-lg font-medium hover:bg-indigo-200 transition">جزئیات و رزرو</a>
-                </div>
-            </div>
+            @empty
+                <p class="text-gray-500 col-span-3 text-center">هیچ توری یافت نشد.</p>
+            @endforelse
         </div>
         <div class="text-center mt-10">
-            <a href="{{ route('register') }}" class="inline-flex items-center bg-indigo-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-indigo-700 transition shadow">
+            <a href="{{ route('tours.index') }}" class="inline-flex items-center bg-indigo-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-indigo-700 transition shadow">
                 <i class="fas fa-arrow-left ml-2"></i> مشاهده همه تورها
             </a>
         </div>

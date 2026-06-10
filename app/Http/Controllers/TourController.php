@@ -11,13 +11,48 @@ class TourController extends Controller
     /**
      * Display a listing of active tours.
      */
-    public function index()
-    {
-        $tours = Tour::active()
-            ->orderBy('start_date', 'asc')
-            ->get();
 
-        return response()->json($tours);
+    public function index(Request $request)
+    {
+        $query = Tour::query()->where('is_active', true);
+
+        // Filter by title (search)
+        if ($request->filled('search')) {
+            $query->where('title', 'like', '%' . $request->search . '%');
+        }
+
+        // Filter by location
+        if ($request->filled('location')) {
+            $query->where('location', 'like', '%' . $request->location . '%');
+        }
+
+        // Filter by price range
+        if ($request->filled('min_price')) {
+            $query->where('price', '>=', $request->min_price);
+        }
+        if ($request->filled('max_price')) {
+            $query->where('price', '<=', $request->max_price);
+        }
+
+        // Filter by start date (tours starting on or after)
+        if ($request->filled('start_date')) {
+            $query->where('start_date', '>=', $request->start_date);
+        }
+
+        // Filter by end date (tours ending on or before)
+        if ($request->filled('end_date')) {
+            $query->where('end_date', '<=', $request->end_date);
+        }
+
+        // Sort
+        $sort = $request->get('sort', 'start_date');
+        $direction = $request->get('direction', 'asc');
+        $query->orderBy($sort, $direction);
+
+        // Paginate (12 per page)
+        $tours = $query->paginate(12)->withQueryString();
+
+        return view('tours.index', compact('tours'));
     }
 
     /**
@@ -61,13 +96,14 @@ class TourController extends Controller
      */
     public function show(Tour $tour)
     {
-        // Load bookings count or relationships if needed
-        $tour->loadCount('bookings');
-
-        if (request()->wantsJson()) {
-            return response()->json($tour);
-        }
-
+//        // Load bookings count or relationships if needed
+//        $tour->loadCount('bookings');
+//
+//        if (request()->wantsJson()) {
+//            return response()->json($tour);
+//        }
+//
+//        return view('tours.show', compact('tour'));
         return view('tours.show', compact('tour'));
     }
 

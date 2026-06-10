@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TourController;
 use App\Http\Controllers\BookingController;
+use App\Models\Tour;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\TourController as AdminTourController;
 // This single line loads all of Breeze's authentication routes
@@ -12,8 +13,15 @@ require __DIR__.'/auth.php';
 // No need for Auth::routes() here
 
 Route::get('/', function () {
-    return view('welcome');
+    $popularTours = Tour::active()
+        ->latest()
+        ->take(6)
+        ->get();
+    return view('welcome', compact('popularTours'));
 });
+
+Route::get('/tours', [TourController::class, 'index'])->name('tours.index');
+Route::get('/tours/{tour}', [TourController::class, 'show'])->name('tours.show');
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     // User management
@@ -29,7 +37,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
 
-    Route::resource('tours', TourController::class);
+//    Route::resource('tours', TourController::class);
     Route::resource('bookings', BookingController::class);
     Route::patch('bookings/{booking}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
 });
