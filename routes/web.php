@@ -39,5 +39,5 @@ Route::middleware(['auth'])->group(function () {
 
 //    Route::resource('tours', TourController::class);
     Route::resource('bookings', BookingController::class);
-    Route::patch('bookings/{booking}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
+    Route::patch('bookings/{bookings}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
 });

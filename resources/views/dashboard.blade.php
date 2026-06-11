@@ -57,7 +57,7 @@
                     </div>
 
                     {{-- فرم مخفی برای لغو رزرو (در صورت نیاز) --}}
-                    <form id="cancel-form" method="POST" action="{{ route('bookings.cancel', ['booking' => auth()->user()->bookings()->latest()->first()->id ?? 0]) }}" style="display:none">
+                    <form id="cancel-form" method="POST" action="{{ route('bookings.cancel', ['bookings' => auth()->user()->bookings()->latest()->first()->id ?? 0]) }}" style="display:none">
                         @csrf @method('DELETE')
                     </form>
                 </div>
@@ -100,7 +100,7 @@
                                             </x-button>
                                             @if($booking->status !== 'cancelled')
                                                 <x-button href="#" icon="fa-times-circle" variant="danger" class="text-xs px-2 py-1"
-                                                          onclick="event.preventDefault(); if(confirm('لغو این رزرو؟')) document.getElementById('cancel-booking-{{ $booking->id }}').submit();">
+                                                          onclick="event.preventDefault(); if(confirm('لغو این رزرو؟')) document.getElementById('cancel-bookings-{{ $booking->id }}').submit();">
                                                     لغو
                                                 </x-button>
                                                 <form id="cancel-booking-{{ $booking->id }}" method="POST" action="{{ route('bookings.update', $booking) }}" style="display:none">
