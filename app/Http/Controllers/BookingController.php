@@ -21,7 +21,6 @@ class BookingController extends Controller
             'tour_id' => 'required|exists:tours,id',
             'number_of_people' => 'required|integer|min:1',
             'total_price' => 'required|numeric',
-            'status' => 'required|in:pending,confirmed,cancelled',
         ]);
 
         $tour = Tour::findOrFail($request->tour_id);
@@ -31,15 +30,16 @@ class BookingController extends Controller
             return back()->withErrors(['number_of_people' => 'تعداد نفرات بیشتر از ظرفیت مجاز تور است.']);
         }
 
-        $booking = Auth::user()->bookings()->create([
+        // Create booking with status = 'confirmed' (immediately)
+        $booking = auth()->user()->bookings()->create([
             'tour_id' => $request->tour_id,
             'number_of_people' => $request->number_of_people,
             'total_price' => $request->total_price,
-            'status' => 'pending',
+            'status' => 'confirmed',      // <-- directly confirmed
             'booking_date' => now(),
         ]);
 
-        return redirect()->route('bookings.show', $booking)->with('success', 'رزرو شما با موفقیت ثبت شد.');
+        return redirect()->route('bookings.show', $booking)->with('success', 'رزرو شما با موفقیت انجام شد.');
     }
 
     public function show(Booking $booking)

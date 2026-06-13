@@ -1,128 +1,68 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+    <div class="max-w-7xl mx-auto">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">خوش آمدید، {{ Auth::user()->name }} 👋</h1>
+            <p class="text-gray-500 mt-1">از آخرین فعالیت‌های خود مطلع شوید</p>
+        </div>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-
-            <!-- کارت خوش‌آمدگویی -->
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
-                <div class="p-6 text-gray-900">
-                    {{ __("به پنل کاربری خوش آمدید، ") }} {{ Auth::user()->name }}!
-                </div>
-                @auth
-                    @if(auth()->user()->is_admin)
-                        <div class="border-t border-gray-200 pt-4 mt-4">
-                            <div class="px-4 text-xs text-gray-500 uppercase">مدیریت</div>
-                            <a href="{{ route('admin.users.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">مدیریت کاربران</a>
-                            <a href="{{ route('admin.tours.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">مدیریت تورها</a>
-                        </div>
-                    @endif
-                @endauth
-            </div>
-
-            <!-- دکمه‌های عملیاتی مرتبط با پروژه -->
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
-                <div class="p-6">
-                    <h3 class="text-lg font-semibold mb-4">⚡ عملیات سریع</h3>
-                    <div class="flex flex-wrap gap-3">
-                        {{-- دکمه مشاهده همه تورها (primary) --}}
-                        <x-button href="{{ route('tours.index') }}" icon="fa-eye" variant="primary">
-                            مشاهده تورها
-                        </x-button>
-
-                        {{-- دکمه رزرو تور جدید (success) --}}
-                        <x-button href="{{ route('tours.index') }}" icon="fa-calendar-plus" variant="success">
-                            رزرو تور جدید
-                        </x-button>
-
-                        {{-- دکمه مشاهده رزروهای من (outline) --}}
-                        <x-button href="{{ route('bookings.index') }}" icon="fa-ticket-alt" variant="outline">
-                            رزروهای من
-                        </x-button>
-
-                        {{-- دکمه لغو رزرو (danger) – در صورت داشتن متد جداگانه --}}
-                        <x-button href="#" icon="fa-trash-alt" variant="danger"
-                                  onclick="event.preventDefault(); if(confirm('لغو رزرو؟')) document.getElementById('cancel-form').submit();">
-                            لغو آخرین رزرو
-                        </x-button>
-
-                        {{-- دکمه بایگانی تورها (ghost) --}}
-                        <x-button href="{{ route('tours.index') }}?filter=archived" icon="fa-archive" variant="ghost">
-                            تورهای بایگانی شده
-                        </x-button>
+        <!-- Stats cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow p-6 text-white">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-blue-100 text-sm">کل رزروها</p>
+                        <p class="text-3xl font-bold">{{ $totalBookings ?? 0 }}</p>
                     </div>
-
-                    {{-- فرم مخفی برای لغو رزرو (در صورت نیاز) --}}
-                    <form id="cancel-form" method="POST" action="{{ route('bookings.cancel', ['bookings' => auth()->user()->bookings()->latest()->first()->id ?? 0]) }}" style="display:none">
-                        @csrf @method('DELETE')
-                    </form>
+                    <i class="fas fa-calendar-check text-4xl text-blue-200"></i>
                 </div>
             </div>
-
-            <!-- نمایش آخرین رزروها با دکمه‌های اختصاصی داخل جدول -->
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6">
-                    <h3 class="text-lg font-semibold mb-4">📋 آخرین رزروهای شما</h3>
-                    @if($recentBookings->count())
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-50">
-                                <tr>
-                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">تور</th>
-                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">تعداد نفرات</th>
-                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">قیمت کل</th>
-                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">وضعیت</th>
-                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">عملیات</th>
-                                </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                @foreach($recentBookings as $booking)
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $booking->tour->title }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $booking->number_of_people }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ number_format($booking->total_price) }} تومان</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 py-1 text-xs rounded-full
-                                                @if($booking->status === 'confirmed') bg-green-100 text-green-800
-                                                @elseif($booking->status === 'cancelled') bg-red-100 text-red-800
-                                                @else bg-yellow-100 text-yellow-800 @endif">
-                                                {{ $booking->status }}
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                            {{-- دکمه مشاهده جزئیات رزرو --}}
-                                            <x-button href="{{ route('bookings.show', $booking) }}" icon="fa-info-circle" variant="outline" class="text-xs px-2 py-1">
-                                                جزئیات
-                                            </x-button>
-                                            @if($booking->status !== 'cancelled')
-                                                <x-button href="#" icon="fa-times-circle" variant="danger" class="text-xs px-2 py-1"
-                                                          onclick="event.preventDefault(); if(confirm('لغو این رزرو؟')) document.getElementById('cancel-bookings-{{ $booking->id }}').submit();">
-                                                    لغو
-                                                </x-button>
-                                                <form id="cancel-booking-{{ $booking->id }}" method="POST" action="{{ route('bookings.update', $booking) }}" style="display:none">
-                                                    @csrf @method('PATCH')
-                                                    <input type="hidden" name="status" value="cancelled">
-                                                </form>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    @else
-                        <p class="text-gray-500">هنوز رزروی انجام نداده‌اید.</p>
-                        <div class="mt-4">
-                            <x-button href="{{ route('tours.index') }}" icon="fa-search" variant="primary">
-                                مشاهده تورها و رزرو
-                            </x-button>
-                        </div>
-                    @endif
+            <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow p-6 text-white">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-green-100 text-sm">رزروهای تأیید شده</p>
+                        <p class="text-3xl font-bold">{{ $confirmedBookings ?? 0 }}</p>
+                    </div>
+                    <i class="fas fa-check-circle text-4xl text-green-200"></i>
                 </div>
+            </div>
+            <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl shadow p-6 text-white">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-indigo-100 text-sm">تورهای فعال</p>
+                        <p class="text-3xl font-bold">{{ $activeToursCount ?? 0 }}</p>
+                    </div>
+                    <i class="fas fa-umbrella-beach text-4xl text-indigo-200"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent bookings -->
+        <div class="bg-white rounded-xl shadow overflow-hidden">
+            <div class="px-6 py-4 border-b flex justify-between items-center">
+                <h2 class="text-lg font-bold text-gray-800">آخرین رزروهای شما</h2>
+                <a href="{{ route('bookings.index') }}" class="text-indigo-600 text-sm hover:underline">مشاهده همه</a>
+            </div>
+            <div class="p-6">
+                @if($recentBookings->count())
+                    <div class="space-y-3">
+                        @foreach($recentBookings as $booking)
+                            <div class="flex justify-between items-center border-b pb-3 last:border-0">
+                                <div>
+                                    <p class="font-semibold">{{ $booking->tour->title }}</p>
+                                    <p class="text-sm text-gray-500">{{ $booking->number_of_people }} نفر - {{ number_format($booking->total_price) }} تومان</p>
+                                </div>
+                                <span class="text-sm px-3 py-1 rounded-full
+                                    @if($booking->status == 'confirmed') bg-green-100 text-green-700
+                                    @elseif($booking->status == 'cancelled') bg-red-100 text-red-700
+                                    @else bg-yellow-100 text-yellow-700 @endif">
+                                    {{ $booking->status == 'confirmed' ? 'تأیید شده' : ($booking->status == 'cancelled' ? 'لغو شده' : 'در انتظار') }}
+                                </span>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <p class="text-gray-500 text-center py-4">هیچ رزروی ندارید. برای رزرو به <a href="{{ route('tours.index') }}" class="text-indigo-600">صفحه تورها</a> بروید.</p>
+                @endif
             </div>
         </div>
     </div>
