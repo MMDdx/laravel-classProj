@@ -29,6 +29,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     // Tour management
     Route::resource('tours', AdminTourController::class);
+    // booking
+    Route::resource('bookings', \App\Http\Controllers\Admin\BookingController::class)->except(['create', 'store', 'edit']);
 });
 
 Route::middleware(['auth'])->group(function () {

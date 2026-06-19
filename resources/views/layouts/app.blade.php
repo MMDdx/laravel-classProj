@@ -52,6 +52,9 @@
                     <a href="{{ route('admin.tours.index') }}" class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition">
                         <i class="fas fa-umbrella-beach w-5"></i> <span>مدیریت تورها</span>
                     </a>
+                    <a href="{{ route('admin.bookings.index') }}" class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition">
+                        <i class="fas fa-clipboard-list w-5"></i> <span>مدیریت رزروها</span>
+                    </a>
                 </div>
             @endif
         </nav>
