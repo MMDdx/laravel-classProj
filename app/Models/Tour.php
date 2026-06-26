@@ -21,6 +21,7 @@ class Tour extends Model
         'location',
         'image_url',
         'is_active',
+        'remaining_capacity',
     ];
 
     // Relationship: A tour has many bookings

@@ -84,7 +84,7 @@
                         <input type="number" name="number_of_people" id="number_of_people"
                                min="1" max="{{ $tour->max_capacity }}" required
                                class="w-full rounded-lg border-gray-300 focus:ring-indigo-500 focus:border-indigo-500" value="1">
-                        <p class="text-xs text-gray-400 mt-1">حداکثر ظرفیت: {{ $tour->max_capacity }} نفر</p>
+                        <p class="text-xs text-gray-400 mt-1">ظرفیت باقیمانده: {{ $tour->remaining_capacity }} نفر</p>
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1">قیمت هر نفر</label>

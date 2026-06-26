@@ -21,22 +21,42 @@ class BookingController extends Controller
         return view('admin.bookings.show', compact('booking'));
     }
 
-    public function update(ProfileUpdateRequest $request): \Illuminate\Http\RedirectResponse
+    public function update(Request $request, Booking $booking)
     {
-        $request->user()->fill($request->validated());
+        $request->validate([
+            'status' => 'required|in:pending,confirmed,cancelled',
+        ]);
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        $oldStatus = $booking->status;
+        $newStatus = $request->status;
+
+        // If booking was pending and now confirmed → reduce capacity
+        if ($oldStatus !== 'confirmed' && $newStatus === 'confirmed') {
+            if ($booking->number_of_people > $booking->tour->remaining_capacity) {
+                return back()->withErrors(['status' => 'ظرفیت باقیمانده برای تایید این رزرو کافی نیست.']);
+            }
+            $booking->tour->decrement('remaining_capacity', $booking->number_of_people);
         }
 
-        $request->user()->save();
+        // If booking was confirmed and now cancelled → restore capacity
+        if ($oldStatus === 'confirmed' && $newStatus === 'cancelled') {
+            $booking->tour->increment('remaining_capacity', $booking->number_of_people);
+        }
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        $booking->update(['status' => $newStatus]);
+
+        return redirect()->route('admin.bookings.index')->with('success', 'وضعیت رزرو با موفقیت تغییر یافت.');
     }
 
     public function destroy(Booking $booking)
     {
+        // Restore capacity if booking was confirmed
+        if ($booking->status === 'confirmed') {
+            $booking->tour->increment('remaining_capacity', $booking->number_of_people);
+        }
+
         $booking->delete();
+
         return redirect()->route('admin.bookings.index')->with('success', 'رزرو حذف شد.');
     }
 }

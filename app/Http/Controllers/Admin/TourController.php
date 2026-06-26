@@ -35,6 +35,8 @@ class TourController extends Controller
         ]);
 
         // Slug generated automatically in model, but you can also set manually:
+        $validated['remaining_capacity'] = $validated['max_capacity'];
+
         Tour::create($validated);
 
         return redirect()->route('admin.tours.index')->with('success', 'تور با موفقیت ایجاد شد.');
@@ -59,7 +61,15 @@ class TourController extends Controller
             'is_active' => 'boolean',
         ]);
 
+        if (isset($validated['max_capacity']) && $validated['max_capacity'] != $tour->max_capacity) {
+            $difference = $validated['max_capacity'] - $tour->max_capacity;
+            $tour->remaining_capacity += $difference;
+            $tour->max_capacity = $validated['max_capacity'];
+            $tour->save();
+        }
+
         $tour->update($validated);
+
         return redirect()->route('admin.tours.index')->with('success', 'تور بروزرسانی شد.');
     }
 

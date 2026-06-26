@@ -26,18 +26,21 @@ class BookingController extends Controller
         $tour = Tour::findOrFail($request->tour_id);
 
         // Check capacity
-        if ($request->number_of_people > $tour->max_capacity) {
-            return back()->withErrors(['number_of_people' => 'تعداد نفرات بیشتر از ظرفیت مجاز تور است.']);
+        if ($request->number_of_people > $tour->remaining_capacity) {
+            return back()->withErrors(['number_of_people' => 'تعداد نفرات بیشتر از ظرفیت باقیمانده تور است. (ظرفیت باقیمانده: ' . $tour->remaining_capacity . ' نفر)']);
         }
 
-        // Create booking with status = 'confirmed' (immediately)
+        // Create booking with status 'confirmed'
         $booking = auth()->user()->bookings()->create([
             'tour_id' => $request->tour_id,
             'number_of_people' => $request->number_of_people,
             'total_price' => $request->total_price,
-            'status' => 'confirmed',      // <-- directly confirmed
+            'status' => 'confirmed',
             'booking_date' => now(),
         ]);
+
+        // Reduce remaining capacity
+        $tour->decrement('remaining_capacity', $request->number_of_people);
 
         return redirect()->route('bookings.show', $booking)->with('success', 'رزرو شما با موفقیت انجام شد.');
     }
@@ -56,7 +59,12 @@ class BookingController extends Controller
         if ($booking->user_id !== Auth::id()) {
             abort(403);
         }
+
+        // Restore capacity before cancelling
+        $booking->tour->increment('remaining_capacity', $booking->number_of_people);
+
         $booking->update(['status' => 'cancelled']);
+
         return redirect()->route('bookings.index')->with('success', 'رزرو لغو شد.');
     }
 }
