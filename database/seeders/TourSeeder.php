@@ -18,6 +18,7 @@ class TourSeeder extends Seeder
                 'start_date' => '2025-07-15',
                 'end_date' => '2025-07-22',
                 'max_capacity' => 25,
+                'remaining_capacity' => 25,  // ← ADD THIS
                 'location' => 'اصفهان، شیراز، یزد',
                 'image_url' => 'https://images.unsplash.com/photo-1548013146-72479768bada',
                 'is_active' => true,
@@ -29,6 +30,7 @@ class TourSeeder extends Seeder
                 'start_date' => '2025-08-05',
                 'end_date' => '2025-08-13',
                 'max_capacity' => 30,
+                'remaining_capacity' => 30,  // ← ADD THIS
                 'location' => 'استانبول، کاپادوکیا',
                 'image_url' => 'https://images.unsplash.com/photo-1527838832700-5054e4898686',
                 'is_active' => true,
@@ -40,6 +42,7 @@ class TourSeeder extends Seeder
                 'start_date' => '2025-07-25',
                 'end_date' => '2025-07-29',
                 'max_capacity' => 40,
+                'remaining_capacity' => 40,  // ← ADD THIS
                 'location' => 'جزیره کیش',
                 'image_url' => 'https://images.unsplash.com/photo-1586500036702-6bcac6b3bdd1',
                 'is_active' => true,
@@ -51,6 +54,7 @@ class TourSeeder extends Seeder
                 'start_date' => '2025-09-10',
                 'end_date' => '2025-09-15',
                 'max_capacity' => 20,
+                'remaining_capacity' => 20,  // ← ADD THIS
                 'location' => 'دبی، امارات',
                 'image_url' => 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c',
                 'is_active' => true,
@@ -62,6 +66,7 @@ class TourSeeder extends Seeder
                 'start_date' => '2025-08-20',
                 'end_date' => '2025-08-26',
                 'max_capacity' => 35,
+                'remaining_capacity' => 35,  // ← ADD THIS
                 'location' => 'گرگان، ساری، رامسر',
                 'image_url' => 'https://images.unsplash.com/photo-1584128071033-c571ec12614c',
                 'is_active' => true,
@@ -73,6 +78,7 @@ class TourSeeder extends Seeder
                 'start_date' => '2025-09-05',
                 'end_date' => '2025-09-12',
                 'max_capacity' => 25,
+                'remaining_capacity' => 25,  // ← ADD THIS
                 'location' => 'آنتالیا، ترکیه',
                 'image_url' => 'https://images.unsplash.com/photo-1582472164424-73b2ff0e8000',
                 'is_active' => true,
@@ -84,6 +90,7 @@ class TourSeeder extends Seeder
                 'start_date' => '2025-07-10',
                 'end_date' => '2025-07-14',
                 'max_capacity' => 45,
+                'remaining_capacity' => 45,  // ← ADD THIS
                 'location' => 'مشهد',
                 'image_url' => 'https://images.unsplash.com/photo-1621944190310-e3cca1564fd6',
                 'is_active' => true,
@@ -95,9 +102,10 @@ class TourSeeder extends Seeder
                 'start_date' => '2025-11-01',
                 'end_date' => '2025-11-11',
                 'max_capacity' => 18,
+                'remaining_capacity' => 18,  // ← ADD THIS
                 'location' => 'بانکوک، پوکت، تایلند',
                 'image_url' => 'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a',
-                'is_active' => false, // مثال: غیرفعال
+                'is_active' => false,
             ],
         ];
 
@@ -110,6 +118,7 @@ class TourSeeder extends Seeder
                 'start_date' => $tour['start_date'],
                 'end_date' => $tour['end_date'],
                 'max_capacity' => $tour['max_capacity'],
+                'remaining_capacity' => $tour['remaining_capacity'],  // ← ADD THIS
                 'location' => $tour['location'],
                 'image_url' => $tour['image_url'],
                 'is_active' => $tour['is_active'],
