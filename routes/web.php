@@ -7,10 +7,9 @@ use App\Http\Controllers\BookingController;
 use App\Models\Tour;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\TourController as AdminTourController;
-// This single line loads all of Breeze's authentication routes
+
 require __DIR__.'/auth.php';
 
-// No need for Auth::routes() here
 
 Route::get('/', function () {
     $popularTours = Tour::active()

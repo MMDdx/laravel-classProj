@@ -49,7 +49,6 @@ class TourController extends Controller
         $direction = $request->get('direction', 'asc');
         $query->orderBy($sort, $direction);
 
-        // Paginate (12 per page)
         $tours = $query->paginate(12)->withQueryString();
 
         return view('tours.index', compact('tours'));
@@ -63,9 +62,6 @@ class TourController extends Controller
         return view('tours.create');
     }
 
-    /**
-     * Store a newly created tour in storage.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -82,7 +78,6 @@ class TourController extends Controller
 
         $tour = Tour::create($validated);
 
-        // For API (JSON response)
         if ($request->wantsJson()) {
             return response()->json($tour, 201);
         }
@@ -96,28 +91,15 @@ class TourController extends Controller
      */
     public function show(Tour $tour)
     {
-//        // Load bookings count or relationships if needed
-//        $tour->loadCount('bookings');
-//
-//        if (request()->wantsJson()) {
-//            return response()->json($tour);
-//        }
-//
-//        return view('tours.show', compact('tour'));
         return view('tours.show', compact('tour'));
     }
 
-    /**
-     * Show the form for editing the specified tour (web view).
-     */
+
     public function edit(Tour $tour)
     {
         return view('tours.edit', compact('tour'));
     }
 
-    /**
-     * Update the specified tour in storage.
-     */
     public function update(Request $request, Tour $tour)
     {
         $validated = $request->validate([
@@ -141,9 +123,6 @@ class TourController extends Controller
         return redirect()->route('tours.show', $tour)->with('success', 'Tour updated!');
     }
 
-    /**
-     * Remove the specified tour from storage.
-     */
     public function destroy(Request $request, Tour $tour)
     {
         $tour->delete();

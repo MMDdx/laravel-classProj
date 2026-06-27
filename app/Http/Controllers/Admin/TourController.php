@@ -34,7 +34,6 @@ class TourController extends Controller
             'is_active' => 'boolean',
         ]);
 
-        // Slug generated automatically in model, but you can also set manually:
         $validated['remaining_capacity'] = $validated['max_capacity'];
 
         Tour::create($validated);
