@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\Tour;
-use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
@@ -12,11 +12,12 @@ class DashboardController extends Controller
     {
         $user = auth()->user();
 
-        $totalBookings = $user->bookings()->count();
-        $confirmedBookings = $user->bookings()->where('status', 'confirmed')->count();
-        $activeToursCount = Tour::active()->count();
-        $recentBookings = $user->bookings()->with('tour')->latest()->take(5)->get();
-
-        return view('dashboard', compact('totalBookings', 'confirmedBookings', 'activeToursCount', 'recentBookings'));
+        return Inertia::render('Dashboard', [
+            'totalBookings' => $user->bookings()->count(),
+            'confirmedBookings' => $user->bookings()->where('status', 'confirmed')->count(),
+            'activeToursCount' => Tour::active()->count(),
+            'recentBookings' => $user->bookings()->with('tour')->latest()->take(5)->get(),
+            'userName' => $user->name,
+        ]);
     }
 }

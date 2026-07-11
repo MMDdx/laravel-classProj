@@ -8,9 +8,12 @@
     "require": {
         "php": "^8.3",
         "hekmatinasser/verta": "^9.0",
+        "inertiajs/inertia-laravel": "^2.0",
         "laravel/framework": "^13.8",
+        "laravel/sanctum": "^4.0",
         "laravel/tinker": "^3.0",
-        "morilog/jalali": "^3.5"
+        "morilog/jalali": "^3.5",
+        "tightenco/ziggy": "^2.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.7",

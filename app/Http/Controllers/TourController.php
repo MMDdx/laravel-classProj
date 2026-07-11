@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Tour;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-
+use Inertia\Inertia;
 class TourController extends Controller
 {
     /**
@@ -51,7 +51,11 @@ class TourController extends Controller
 
         $tours = $query->paginate(12)->withQueryString();
 
-        return view('tours.index', compact('tours'));
+//        return view('tours.index', compact('tours'));
+        return Inertia::render('Tours/Index.jsx', [
+            'tours' => $tours,
+            'filters' => $request->only(['search', 'location', 'min_price', 'max_price', 'start_date', 'end_date', 'sort', 'direction']),
+        ]);
     }
 
     /**
@@ -91,7 +95,11 @@ class TourController extends Controller
      */
     public function show(Tour $tour)
     {
-        return view('tours.show', compact('tour'));
+        return Inertia::render('Tours/Show', [
+            'tour' => $tour,
+            'canBook' => auth()->check(),
+            'user' => auth()->user(),
+        ]);
     }
 
 

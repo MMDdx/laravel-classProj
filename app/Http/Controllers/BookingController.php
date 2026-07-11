@@ -6,13 +6,16 @@ use App\Models\Booking;
 use App\Models\Tour;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class BookingController extends Controller
 {
     public function index()
     {
         $bookings = Auth::user()->bookings()->with('tour')->latest()->paginate(10);
-        return view('bookings.index', compact('bookings'));
+        return Inertia::render('Bookings/Index.jsx', [
+            'bookings' => $bookings,
+        ]);
     }
 
     public function store(Request $request)
@@ -47,11 +50,12 @@ class BookingController extends Controller
 
     public function show(Booking $booking)
     {
-        // Ensure the bookings belongs to the logged-in user
         if ($booking->user_id !== Auth::id()) {
             abort(403);
         }
-        return view('bookings.show', compact('booking'));
+        return Inertia::render('Bookings/Show', [
+            'booking' => $booking->load('tour'),
+        ]);
     }
 
     public function cancel(Booking $booking)

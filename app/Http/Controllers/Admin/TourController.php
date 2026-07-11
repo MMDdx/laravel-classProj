@@ -6,18 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Models\Tour;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class TourController extends Controller
 {
     public function index()
     {
         $tours = Tour::latest()->paginate(15);
-        return view('admin.tours.index', compact('tours'));
+        return Inertia::render('Admin/Tours/Index', compact('tours'));
     }
 
     public function create()
     {
-        return view('admin.tours.create');
+        return Inertia::render('Admin/Tours/Create');
     }
 
     public function store(Request $request)
@@ -43,7 +44,7 @@ class TourController extends Controller
 
     public function edit(Tour $tour)
     {
-        return view('admin.tours.edit', compact('tour'));
+        return Inertia::render('Admin/Tours/Edit', compact('tour'));
     }
 
     public function update(Request $request, Tour $tour)
