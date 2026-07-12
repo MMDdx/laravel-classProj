@@ -15,7 +15,6 @@ export default function Register() {
 
     const submit = (e) => {
         e.preventDefault();
-
         post(route('register'), {
             onFinish: () => reset('password', 'password_confirmation'),
         });
@@ -23,11 +22,11 @@ export default function Register() {
 
     return (
         <GuestLayout>
-            <Head title="Register" />
+            <Head title="ثبت‌نام" />
 
             <form onSubmit={submit}>
                 <div>
-                    <InputLabel htmlFor="name" value="Name" />
+                    <InputLabel htmlFor="name" value="نام" />
 
                     <TextInput
                         id="name"
@@ -44,7 +43,7 @@ export default function Register() {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="email" value="Email" />
+                    <InputLabel htmlFor="email" value="ایمیل" />
 
                     <TextInput
                         id="email"
@@ -61,7 +60,7 @@ export default function Register() {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                    <InputLabel htmlFor="password" value="رمز عبور" />
 
                     <TextInput
                         id="password"
@@ -78,10 +77,7 @@ export default function Register() {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel
-                        htmlFor="password_confirmation"
-                        value="Confirm Password"
-                    />
+                    <InputLabel htmlFor="password_confirmation" value="تکرار رمز عبور" />
 
                     <TextInput
                         id="password_confirmation"
@@ -90,16 +86,11 @@ export default function Register() {
                         value={data.password_confirmation}
                         className="mt-1 block w-full"
                         autoComplete="new-password"
-                        onChange={(e) =>
-                            setData('password_confirmation', e.target.value)
-                        }
+                        onChange={(e) => setData('password_confirmation', e.target.value)}
                         required
                     />
 
-                    <InputError
-                        message={errors.password_confirmation}
-                        className="mt-2"
-                    />
+                    <InputError message={errors.password_confirmation} className="mt-2" />
                 </div>
 
                 <div className="mt-4 flex items-center justify-end">
@@ -107,11 +98,11 @@ export default function Register() {
                         href={route('login')}
                         className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
-                        Already registered?
+                        قبلاً ثبت‌نام کرده‌اید؟
                     </Link>
 
                     <PrimaryButton className="ms-4" disabled={processing}>
-                        Register
+                        ثبت‌نام
                     </PrimaryButton>
                 </div>
             </form>

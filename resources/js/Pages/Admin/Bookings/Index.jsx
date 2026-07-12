@@ -3,7 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import Pagination from '@/Components/Pagination';
 
 export default function AdminBookingsIndex({ bookings }) {
-    const { flash } = usePage().props;
+    const { flash } = usePage().props || {};
 
     const destroy = (id) => {
         if (confirm('حذف رزرو؟')) {

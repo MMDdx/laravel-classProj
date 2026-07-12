@@ -3,7 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import Pagination from '@/Components/Pagination';
 
 export default function AdminToursIndex({ tours }) {
-    const { flash } = usePage().props;
+    const { flash } = usePage().props || {};
 
     const destroy = (id) => {
         if (confirm('آیا مطمئنید؟')) {

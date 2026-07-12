@@ -52,7 +52,7 @@ class TourController extends Controller
         $tours = $query->paginate(12)->withQueryString();
 
 //        return view('tours.index', compact('tours'));
-        return Inertia::render('Tours/Index.jsx', [
+        return Inertia::render('Tours/Index', [
             'tours' => $tours,
             'filters' => $request->only(['search', 'location', 'min_price', 'max_price', 'start_date', 'end_date', 'sort', 'direction']),
         ]);

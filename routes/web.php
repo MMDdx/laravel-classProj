@@ -1,12 +1,18 @@
 <?php
 
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\TourController;
+use App\Http\Controllers\BookingController;
+use App\Models\Tour;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\Admin\TourController as AdminTourController;
+
+require __DIR__.'/auth.php';
 
 Route::get('/', function () {
-    $popularTours = \App\Models\Tour::active()
+    $popularTours = Tour::active()
         ->latest()
         ->take(6)
         ->get();
@@ -17,14 +23,20 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/tours', [TourController::class, 'index'])->name('tours.index');
+Route::get('/tours/{tour}', [TourController::class, 'show'])->name('tours.show');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('users', UserController::class)->only(['index', 'destroy']);
+    Route::resource('tours', AdminTourController::class);
+    Route::resource('bookings', \App\Http\Controllers\Admin\BookingController::class)->except(['create', 'store', 'edit']);
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::resource('bookings', BookingController::class);
+    Route::patch('bookings/{bookings}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
 });
-
-require __DIR__.'/auth.php';

@@ -15,7 +15,6 @@ export default function Login({ status, canResetPassword }) {
 
     const submit = (e) => {
         e.preventDefault();
-
         post(route('login'), {
             onFinish: () => reset('password'),
         });
@@ -23,7 +22,7 @@ export default function Login({ status, canResetPassword }) {
 
     return (
         <GuestLayout>
-            <Head title="Log in" />
+            <Head title="ورود" />
 
             {status && (
                 <div className="mb-4 text-sm font-medium text-green-600">
@@ -33,7 +32,7 @@ export default function Login({ status, canResetPassword }) {
 
             <form onSubmit={submit}>
                 <div>
-                    <InputLabel htmlFor="email" value="Email" />
+                    <InputLabel htmlFor="email" value="ایمیل" />
 
                     <TextInput
                         id="email"
@@ -50,7 +49,7 @@ export default function Login({ status, canResetPassword }) {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                    <InputLabel htmlFor="password" value="رمز عبور" />
 
                     <TextInput
                         id="password"
@@ -70,12 +69,10 @@ export default function Login({ status, canResetPassword }) {
                         <Checkbox
                             name="remember"
                             checked={data.remember}
-                            onChange={(e) =>
-                                setData('remember', e.target.checked)
-                            }
+                            onChange={(e) => setData('remember', e.target.checked)}
                         />
                         <span className="ms-2 text-sm text-gray-600">
-                            Remember me
+                            مرا به خاطر بسپار
                         </span>
                     </label>
                 </div>
@@ -86,12 +83,12 @@ export default function Login({ status, canResetPassword }) {
                             href={route('password.request')}
                             className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         >
-                            Forgot your password?
+                            فراموشی رمز عبور؟
                         </Link>
                     )}
 
                     <PrimaryButton className="ms-4" disabled={processing}>
-                        Log in
+                        ورود
                     </PrimaryButton>
                 </div>
             </form>

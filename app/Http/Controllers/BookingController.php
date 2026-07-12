@@ -13,7 +13,7 @@ class BookingController extends Controller
     public function index()
     {
         $bookings = Auth::user()->bookings()->with('tour')->latest()->paginate(10);
-        return Inertia::render('Bookings/Index.jsx', [
+        return Inertia::render('Bookings/Index', [
             'bookings' => $bookings,
         ]);
     }

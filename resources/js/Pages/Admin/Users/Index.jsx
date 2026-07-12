@@ -3,7 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import Pagination from '@/Components/Pagination';
 
 export default function AdminUsersIndex({ users }) {
-    const { flash } = usePage().props;
+    const { flash } = usePage().props || {};
     const { auth } = usePage().props;
 
     const destroy = (id) => {
