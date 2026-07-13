@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Head, router, usePage } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
 export default function Edit({ mustVerifyEmail, status }) {
     const user = usePage().props.auth.user;
+    const photoInputRef = useRef(null);
 
     const [profile, setProfile] = useState({
         name: user.name || '',
@@ -14,6 +15,10 @@ export default function Edit({ mustVerifyEmail, status }) {
         password: '',
         password_confirmation: '',
     });
+    const [profilePhoto, setProfilePhoto] = useState(null);
+    const [photoPreview, setPhotoPreview] = useState(
+        user.profile_photo_path ? `/storage/${user.profile_photo_path}` : null
+    );
     const [profileErrors, setProfileErrors] = useState({});
     const [passwordErrors, setPasswordErrors] = useState({});
     const [profileProcessing, setProfileProcessing] = useState(false);
@@ -24,14 +29,40 @@ export default function Edit({ mustVerifyEmail, status }) {
             name: user.name || '',
             email: user.email || '',
         });
+        setPhotoPreview(
+            user.profile_photo_path ? `/storage/${user.profile_photo_path}` : null
+        );
     }, [user]);
+
+    const handlePhotoChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setProfilePhoto(file);
+            const reader = new FileReader();
+            reader.onload = (e) => setPhotoPreview(e.target.result);
+            reader.readAsDataURL(file);
+        }
+    };
 
     const submitProfile = (e) => {
         e.preventDefault();
         setProfileProcessing(true);
-        router.put(route('profile.update'), profile, {
+
+        const data = new FormData();
+        data.append('name', profile.name);
+        data.append('email', profile.email);
+        if (profilePhoto) {
+            data.append('profile_photo', profilePhoto);
+        }
+        // Add _method as PATCH for Inertia
+        data.append('_method', 'PATCH');
+
+        router.post(route('profile.update'), data, {
             preserveScroll: true,
-            onSuccess: () => setProfileErrors({}),
+            onSuccess: () => {
+                setProfileErrors({});
+                setProfilePhoto(null); // Clear selected file after upload
+            },
             onError: (err) => setProfileErrors(err),
             onFinish: () => setProfileProcessing(false),
         });
@@ -40,7 +71,7 @@ export default function Edit({ mustVerifyEmail, status }) {
     const submitPassword = (e) => {
         e.preventDefault();
         setPasswordProcessing(true);
-        router.put(route('password.update'), password, {
+        router.patch(route('password.update'), password, {
             preserveScroll: true,
             onSuccess: () => {
                 setPasswordErrors({});
@@ -50,6 +81,17 @@ export default function Edit({ mustVerifyEmail, status }) {
             onFinish: () => setPasswordProcessing(false),
         });
     };
+
+    const getAvatarUrl = () => {
+        if (photoPreview) return photoPreview;
+        return null;
+    };
+
+    const DefaultAvatar = () => (
+        <svg className="w-full h-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z" />
+        </svg>
+    );
 
     return (
         <AuthenticatedLayout
@@ -69,6 +111,67 @@ export default function Edit({ mustVerifyEmail, status }) {
                         <p className="text-sm text-green-600">{status}</p>
                     </div>
                 )}
+
+                {/* Profile Photo */}
+                <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
+                        <h3 className="text-base font-semibold text-gray-800">عکس پروفایل</h3>
+                    </div>
+                    <div className="p-6">
+                        <div className="flex items-center gap-5">
+                            <div className="relative">
+                                <div className="w-20 h-20 rounded-full bg-gray-100 overflow-hidden border-2 border-gray-200 flex items-center justify-center">
+                                    {getAvatarUrl() ? (
+                                        <img
+                                            src={getAvatarUrl()}
+                                            alt={user.name}
+                                            className="w-full h-full object-cover"
+                                        />
+                                    ) : (
+                                        <DefaultAvatar />
+                                    )}
+                                </div>
+                            </div>
+                            <div className="flex-1">
+                                <button
+                                    type="button"
+                                    onClick={() => photoInputRef.current?.click()}
+                                    className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 px-4 rounded-lg transition"
+                                >
+                                    انتخاب عکس جدید
+                                </button>
+                                {profilePhoto && (
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setProfilePhoto(null);
+                                            setPhotoPreview(
+                                                user.profile_photo_path
+                                                    ? `/storage/${user.profile_photo_path}`
+                                                    : null
+                                            );
+                                            if (photoInputRef.current) photoInputRef.current.value = '';
+                                        }}
+                                        className="mr-2 text-sm text-red-500 hover:text-red-700 transition"
+                                    >
+                                        لغو
+                                    </button>
+                                )}
+                                <p className="text-xs text-gray-400 mt-2">فرمت‌های مجاز: JPG, PNG حداکثر ۲ مگابایت</p>
+                            </div>
+                            <input
+                                ref={photoInputRef}
+                                type="file"
+                                accept="image/jpeg,image/png,image/webp"
+                                onChange={handlePhotoChange}
+                                className="hidden"
+                            />
+                        </div>
+                        {profileErrors.profile_photo && (
+                            <p className="mt-2 text-sm text-red-500">{profileErrors.profile_photo}</p>
+                        )}
+                    </div>
+                </div>
 
                 {/* Profile Info */}
                 <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
