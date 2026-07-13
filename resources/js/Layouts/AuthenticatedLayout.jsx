@@ -1,141 +1,166 @@
-import ApplicationLogo from '@/Components/ApplicationLogo';
-import Dropdown from '@/Components/Dropdown';
-import NavLink from '@/Components/NavLink';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-import { Link, usePage, router } from '@inertiajs/react';
 import { useState } from 'react';
+import { Link, router, usePage } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
-    const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+    const [mobileOpen, setMobileOpen] = useState(false);
 
-    const logout = (e) => {
+    const handleLogout = (e) => {
         e.preventDefault();
         router.post(route('logout'));
     };
 
     return (
-        <div className="min-h-screen bg-gray-100">
-            <nav className="border-b border-gray-100 bg-white shadow-md sticky top-0 z-50">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div className="flex h-16 justify-between">
-                        <div className="flex">
-                            <div className="flex shrink-0 items-center">
-                                <Link href="/" className="text-2xl font-bold text-indigo-600">
-                                    تورلی
-                                </Link>
+        <div className="min-h-screen bg-gray-50 flex flex-col">
+            <Head>
+                <link rel="icon" type="image/png" href="/logo.png" />
+            </Head>
+
+            {/* Navbar */}
+            <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex justify-between h-16 items-center">
+                        {/* Logo + Brand */}
+                        <Link href="/" className="flex items-center gap-2.5">
+                            <img src="/logo.png" alt="تورلی" className="h-9 w-9 object-contain" onerror={(e) => { e.target.style.display = 'none' }} />
+                            <div className="flex flex-col leading-tight">
+                                <span className="text-lg font-extrabold text-blue-600 tracking-tight">تورلی</span>
+                                <span className="text-[10px] font-semibold text-gray-400 tracking-widest uppercase -mt-0.5">Tourly</span>
                             </div>
+                        </Link>
 
-                            <div className="hidden space-x-8 space-x-reverse sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink href={route('dashboard')} active={route().current('dashboard')}>
-                                    داشبورد
-                                </NavLink>
-                                <NavLink href={route('tours.index')} active={route().current('tours.*')}>
-                                    تورها
-                                </NavLink>
-                                <NavLink href={route('bookings.index')} active={route().current('bookings.*')}>
-                                    رزروهای من
-                                </NavLink>
-                                {user.is_admin && (
-                                    <NavLink href={route('admin.tours.index')} active={route().current('admin.*')}>
-                                        پنل مدیریت
-                                    </NavLink>
-                                )}
-                            </div>
-                        </div>
-
-                        <div className="hidden sm:ms-6 sm:flex sm:items-center">
-                            <div className="relative ms-3">
-                                <Dropdown>
-                                    <Dropdown.Trigger>
-                                        <span className="inline-flex rounded-md">
-                                            <button
-                                                type="button"
-                                                className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
-                                            >
-                                                {user.name}
-                                                <svg className="-me-0.5 ms-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                                                </svg>
-                                            </button>
-                                        </span>
-                                    </Dropdown.Trigger>
-
-                                    <Dropdown.Content>
-                                        <Dropdown.Link href={route('profile.edit')}>
-                                            پروفایل
-                                        </Dropdown.Link>
-                                        {user.is_admin && (
-                                            <Dropdown.Link href={route('admin.users.index')}>
-                                                مدیریت کاربران
-                                            </Dropdown.Link>
-                                        )}
-                                        <Dropdown.Link href={route('logout')} method="post" as="button">
-                                            خروج
-                                        </Dropdown.Link>
-                                    </Dropdown.Content>
-                                </Dropdown>
-                            </div>
-                        </div>
-
-                        <div className="-me-2 flex items-center sm:hidden">
-                            <button
-                                onClick={() => setShowingNavigationDropdown((prev) => !prev)}
-                                className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:outline-none"
+                        {/* Desktop Links */}
+                        <div className="hidden md:flex items-center gap-1">
+                            <Link
+                                href={route('tours.index')}
+                                className="text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 px-3 py-2 rounded-lg transition"
                             >
-                                <svg className="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                                    <path className={!showingNavigationDropdown ? 'inline-flex' : 'hidden'} strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-                                    <path className={showingNavigationDropdown ? 'inline-flex' : 'hidden'} strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                                </svg>
+                                تورها
+                            </Link>
+                            <Link
+                                href={route('dashboard')}
+                                className="text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 px-3 py-2 rounded-lg transition"
+                            >
+                                داشبورد
+                            </Link>
+                            <Link
+                                href={route('bookings.index')}
+                                className="text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 px-3 py-2 rounded-lg transition"
+                            >
+                                رزروهای من
+                            </Link>
+
+                            {user?.is_admin && (
+                                <Link
+                                    href={route('admin.users.index')}
+                                    className="text-sm font-medium text-orange-600 hover:text-orange-700 hover:bg-orange-50 px-3 py-2 rounded-lg transition"
+                                >
+                                    پنل مدیریت
+                                </Link>
+                            )}
+
+                            <div className="w-px h-6 bg-gray-200 mx-1"></div>
+
+                            <span className="text-sm text-gray-500">{user.name}</span>
+                            <button
+                                onClick={handleLogout}
+                                className="text-sm font-medium text-red-600 hover:text-red-700 hover:bg-red-50 px-3 py-2 rounded-lg transition"
+                            >
+                                خروج
+                            </button>
+                        </div>
+
+                        {/* Mobile menu button */}
+                        <button
+                            type="button"
+                            onClick={() => setMobileOpen(!mobileOpen)}
+                            className="md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition"
+                        >
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                {mobileOpen ? (
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                ) : (
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                                )}
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                {/* Mobile menu */}
+                {mobileOpen && (
+                    <div className="md:hidden border-t border-gray-200 bg-white">
+                        <div className="px-4 py-3 space-y-1">
+                            <p className="text-sm text-gray-400 px-3 py-1 border-b border-gray-100 mb-2">{user.name}</p>
+                            <Link
+                                href={route('tours.index')}
+                                className="block text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 px-3 py-2 rounded-lg transition"
+                                onClick={() => setMobileOpen(false)}
+                            >
+                                تورها
+                            </Link>
+                            <Link
+                                href={route('dashboard')}
+                                className="block text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 px-3 py-2 rounded-lg transition"
+                                onClick={() => setMobileOpen(false)}
+                            >
+                                داشبورد
+                            </Link>
+                            <Link
+                                href={route('bookings.index')}
+                                className="block text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 px-3 py-2 rounded-lg transition"
+                                onClick={() => setMobileOpen(false)}
+                            >
+                                رزروهای من
+                            </Link>
+                            {user?.is_admin && (
+                                <Link
+                                    href={route('admin.users.index')}
+                                    className="block text-sm font-medium text-orange-600 hover:bg-orange-50 px-3 py-2 rounded-lg transition"
+                                    onClick={() => setMobileOpen(false)}
+                                >
+                                    پنل مدیریت
+                                </Link>
+                            )}
+                            <Link
+                                href={route('profile.edit')}
+                                className="block text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 px-3 py-2 rounded-lg transition"
+                                onClick={() => setMobileOpen(false)}
+                            >
+                                ویرایش پروفایل
+                            </Link>
+                            <button
+                                onClick={handleLogout}
+                                className="w-full text-right text-sm font-medium text-red-600 hover:bg-red-50 px-3 py-2 rounded-lg transition"
+                            >
+                                خروج
                             </button>
                         </div>
                     </div>
-                </div>
-
-                <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
-                    <div className="space-y-1 pb-3 pt-2">
-                        <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
-                            داشبورد
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink href={route('tours.index')} active={route().current('tours.*')}>
-                            تورها
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink href={route('bookings.index')} active={route().current('bookings.*')}>
-                            رزروهای من
-                        </ResponsiveNavLink>
-                        {user.is_admin && (
-                            <>
-                                <ResponsiveNavLink href={route('admin.tours.index')}>مدیریت تورها</ResponsiveNavLink>
-                                <ResponsiveNavLink href={route('admin.bookings.index')}>مدیریت رزروها</ResponsiveNavLink>
-                                <ResponsiveNavLink href={route('admin.users.index')}>مدیریت کاربران</ResponsiveNavLink>
-                            </>
-                        )}
-                    </div>
-
-                    <div className="border-t border-gray-200 pb-1 pt-4">
-                        <div className="px-4">
-                            <div className="text-base font-medium text-gray-800">{user.name}</div>
-                            <div className="text-sm font-medium text-gray-500">{user.email}</div>
-                        </div>
-                        <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.edit')}>پروفایل</ResponsiveNavLink>
-                            <ResponsiveNavLink method="post" href={route('logout')} as="button">
-                                خروج
-                            </ResponsiveNavLink>
-                        </div>
-                    </div>
-                </div>
+                )}
             </nav>
 
+            {/* Header */}
             {header && (
-                <header className="bg-white shadow">
-                    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+                <header className="bg-white shadow-sm border-b border-gray-200">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
                         {header}
                     </div>
                 </header>
             )}
 
-            <main>{children}</main>
+            {/* Content */}
+            <main className="flex-1">
+                {children}
+            </main>
+
+            {/* Footer */}
+            <footer className="bg-white border-t border-gray-200 py-6 mt-auto">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-500">
+                    تمامی حقوق محفوظ است.
+                </div>
+            </footer>
         </div>
     );
 }
