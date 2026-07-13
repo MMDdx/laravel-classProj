@@ -29,6 +29,18 @@ export default function ToursIndex({ tours, filters }) {
         });
     };
 
+    const getPageLabel = (label, index, total) => {
+        const cleaned = label
+            .replace(/&laquo;/g, '')
+            .replace(/&raquo;/g, '')
+            .replace(/&lsaquo;/g, '')
+            .replace(/&rsaquo;/g, '')
+            .trim();
+        if (index === 0) return 'قبلی';
+        if (index === total - 1) return 'بعدی';
+        return cleaned;
+    };
+
     return (
         <PublicLayout>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -45,14 +57,14 @@ export default function ToursIndex({ tours, filters }) {
                                     <input type="text" value={data.search}
                                            onChange={e => setData('search', e.target.value)}
                                            placeholder="مثلاً: کیش"
-                                           className="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500" />
+                                           className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" />
                                 </div>
                                 <div className="mb-4">
                                     <label className="block text-sm font-medium text-gray-700 mb-1">مکان</label>
                                     <input type="text" value={data.location}
                                            onChange={e => setData('location', e.target.value)}
                                            placeholder="شهر یا کشور"
-                                           className="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500" />
+                                           className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" />
                                 </div>
                                 <div className="mb-4">
                                     <label className="block text-sm font-medium text-gray-700 mb-1">بازه قیمت (تومان)</label>
@@ -60,24 +72,24 @@ export default function ToursIndex({ tours, filters }) {
                                         <input type="number" value={data.min_price}
                                                onChange={e => setData('min_price', e.target.value)}
                                                placeholder="حداقل"
-                                               className="w-1/2 rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500" />
+                                               className="w-1/2 px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" />
                                         <input type="number" value={data.max_price}
                                                onChange={e => setData('max_price', e.target.value)}
                                                placeholder="حداکثر"
-                                               className="w-1/2 rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500" />
+                                               className="w-1/2 px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" />
                                     </div>
                                 </div>
                                 <div className="mb-4">
                                     <label className="block text-sm font-medium text-gray-700 mb-1">از تاریخ شروع</label>
                                     <input type="date" value={data.start_date}
                                            onChange={e => setData('start_date', e.target.value)}
-                                           className="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500" />
+                                           className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" />
                                 </div>
                                 <div className="mb-4">
                                     <label className="block text-sm font-medium text-gray-700 mb-1">تا تاریخ پایان</label>
                                     <input type="date" value={data.end_date}
                                            onChange={e => setData('end_date', e.target.value)}
-                                           className="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500" />
+                                           className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" />
                                 </div>
                                 <div className="mb-4">
                                     <label className="block text-sm font-medium text-gray-700 mb-1">مرتب‌سازی</label>
@@ -90,7 +102,7 @@ export default function ToursIndex({ tours, filters }) {
                                                     setData('direction', 'asc');
                                                 }
                                             }}
-                                            className="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+                                            className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
                                         <option value="start_date">تاریخ شروع (قدیمی‌تر)</option>
                                         <option value="price">قیمت (کمترین)</option>
                                         <option value="price_desc">قیمت (بیشترین)</option>
@@ -99,11 +111,11 @@ export default function ToursIndex({ tours, filters }) {
                                 </div>
                                 <div className="flex gap-2">
                                     <button type="submit"
-                                            className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition w-full">
+                                            className="bg-blue-600 text-white px-4 py-2.5 rounded-lg hover:bg-blue-700 transition w-full font-medium">
                                         اعمال فیلتر
                                     </button>
                                     <Link href={route('tours.index')}
-                                          className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition text-center">
+                                          className="bg-gray-200 text-gray-700 px-4 py-2.5 rounded-lg hover:bg-gray-300 transition text-center font-medium">
                                         لغو
                                     </Link>
                                 </div>
@@ -123,41 +135,60 @@ export default function ToursIndex({ tours, filters }) {
                                             <div className="p-4">
                                                 <h3 className="text-xl font-bold text-gray-800">{tour.title}</h3>
                                                 <div className="flex items-center text-gray-500 text-sm mt-1">
-                                                    <i className="fas fa-map-marker-alt ml-1 text-indigo-500"></i>
+                                                    <svg className="w-4 h-4 ml-1 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    </svg>
                                                     <span>{tour.location}</span>
                                                 </div>
                                                 <div className="flex justify-between items-center mt-3">
-                                                    <span className="text-indigo-600 font-bold">{Number(tour.price).toLocaleString()} تومان</span>
+                                                    <span className="text-blue-600 font-bold">{Number(tour.price).toLocaleString()} تومان</span>
                                                 </div>
                                                 <Link href={route('tours.show', tour)}
-                                                      className="mt-4 inline-block w-full text-center bg-indigo-100 text-indigo-700 py-2 rounded-lg font-medium hover:bg-indigo-200 transition">
+                                                      className="mt-4 inline-block w-full text-center bg-blue-50 text-blue-700 py-2 rounded-lg font-medium hover:bg-blue-100 transition">
                                                     مشاهده جزئیات
                                                 </Link>
                                             </div>
                                         </div>
                                     ))}
                                 </div>
-                                {/* Pagination */}
-                                {tours.links && (
-                                    <div className="mt-10 flex justify-center gap-1">
-                                        {tours.links.map((link, i) => (
-                                            link.url ? (
-                                                <button key={i} onClick={() => router.get(link.url)}
-                                                        dangerouslySetInnerHTML={{ __html: link.label }}
-                                                        className={`px-3 py-1 rounded ${link.active ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700'} border`}
-                                                />
+
+                                {/* Pagination — Farsi */}
+                                {tours.links && tours.links.length > 3 && (
+                                    <div className="mt-10 flex items-center justify-center gap-1">
+                                        {tours.links.map((link, i) => {
+                                            const label = getPageLabel(link.label, i, tours.links.length);
+                                            return link.url ? (
+                                                <button
+                                                    key={i}
+                                                    onClick={() => router.get(link.url)}
+                                                    className={`px-3.5 py-1.5 text-sm rounded-lg border transition ${
+                                                        link.active
+                                                            ? 'bg-blue-600 text-white border-blue-600'
+                                                            : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                                                    }`}
+                                                >
+                                                    {label}
+                                                </button>
                                             ) : (
-                                                <span key={i} className="px-3 py-1 text-gray-400" dangerouslySetInnerHTML={{ __html: link.label }} />
-                                            )
-                                        ))}
+                                                <span
+                                                    key={i}
+                                                    className="px-3.5 py-1.5 text-sm rounded-lg border border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed"
+                                                >
+                                                    {label}
+                                                </span>
+                                            );
+                                        })}
                                     </div>
                                 )}
                             </>
                         ) : (
                             <div className="bg-white rounded-xl shadow-md p-12 text-center">
-                                <i className="fas fa-search text-5xl text-gray-400 mb-4"></i>
+                                <svg className="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
                                 <h3 className="text-xl font-semibold text-gray-700">هیچ توری با این مشخصات یافت نشد</h3>
-                                <Link href={route('tours.index')} className="inline-block mt-4 text-indigo-600 hover:underline">
+                                <Link href={route('tours.index')} className="inline-block mt-4 text-blue-600 hover:underline font-medium">
                                     نمایش همه تورها
                                 </Link>
                             </div>

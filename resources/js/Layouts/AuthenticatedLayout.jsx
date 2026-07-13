@@ -22,11 +22,11 @@ export default function AuthenticatedLayout({ header, children }) {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16 items-center">
                         {/* Logo + Brand */}
-                        <Link href="/" className="flex items-center gap-2.5">
-                            <img src="/logo.png" alt="تورلی" className="h-9 w-9 object-contain" onerror={(e) => { e.target.style.display = 'none' }} />
+                        <Link href="/" className="flex items-center gap-3">
+                            <img src="/logo.png" alt="تورلی" className="h-11 w-11 object-contain" onerror={(e) => { e.target.style.display = 'none' }} />
                             <div className="flex flex-col leading-tight">
-                                <span className="text-lg font-extrabold text-blue-600 tracking-tight">تورلی</span>
-                                <span className="text-[10px] font-semibold text-gray-400 tracking-widest uppercase -mt-0.5">Tourly</span>
+                                <span className="text-2xl font-extrabold text-blue-600 tracking-tight">تورلی</span>
+                                <span className="text-[11px] font-semibold text-gray-400 tracking-[0.2em] uppercase -mt-0.5">Tourly</span>
                             </div>
                         </Link>
 
