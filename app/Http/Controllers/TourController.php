@@ -95,8 +95,14 @@ class TourController extends Controller
      */
     public function show(Tour $tour)
     {
+        $comments = $tour->comments()
+            ->with('user')
+            ->latest()
+            ->get();
+
         return Inertia::render('Tours/Show', [
             'tour' => $tour,
+            'comments' => $comments,
             'canBook' => auth()->check(),
             'user' => auth()->user(),
         ]);

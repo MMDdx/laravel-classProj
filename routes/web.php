@@ -25,6 +25,7 @@ Route::get('/', function () {
 
 Route::get('/tours', [TourController::class, 'index'])->name('tours.index');
 Route::get('/tours/{tour}', [TourController::class, 'show'])->name('tours.show');
+Route::post('/tours/{tour}/comments', [App\Http\Controllers\CommentController::class, 'store'])->name('comments.store');
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('users', UserController::class)->only(['index', 'destroy']);

@@ -29,6 +29,13 @@ class Tour extends Model
     {
         return $this->hasMany(Booking::class);
     }
+
+    // Relationship: A tour has many comments
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     // Automatically generate slug from title when creating
     protected static function boot(): void
     {

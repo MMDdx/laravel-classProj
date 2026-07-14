@@ -2,6 +2,31 @@ import { useState } from 'react';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import PublicLayout from '@/Layouts/PublicLayout';
 
+function CommentAvatar({ user, size = 'w-8 h-8', textSize = 'text-sm' }) {
+    const avatarUrl = user?.profile_photo_path
+        ? `/storage/${user.profile_photo_path}`
+        : null;
+
+    if (avatarUrl) {
+        return (
+            <img
+                src={avatarUrl}
+                alt={user?.name || 'کاربر'}
+                className={`${size} rounded-full object-cover border-2 border-blue-200`}
+                onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
+            />
+        );
+    }
+
+    return (
+        <div className={`${size} bg-blue-100 rounded-full flex items-center justify-center`}>
+            <span className={`${textSize} text-blue-600 font-bold`}>
+                {user?.name ? user.name.charAt(0) : '?'}
+            </span>
+        </div>
+    );
+}
+
 export default function Show({ tour, comments = [] }) {
     const { auth } = usePage().props;
     const isLoggedIn = !!auth.user;
@@ -12,6 +37,7 @@ export default function Show({ tour, comments = [] }) {
     const [processing, setProcessing] = useState(false);
     const [commentProcessing, setCommentProcessing] = useState(false);
     const [commentErrors, setCommentErrors] = useState({});
+    const [visibleCount, setVisibleCount] = useState(5);
 
     if (!tour) {
         return (
@@ -45,14 +71,18 @@ export default function Show({ tour, comments = [] }) {
         setCommentProcessing(true);
         router.post(route('comments.store', { tour: tour.slug }), {
             content: commentForm.content,
-            tour_id: tour.id,
         }, {
             preserveScroll: true,
+            preserveState: false,
             onSuccess: () => { setCommentForm({ content: '' }); setCommentErrors({}); },
             onError: (err) => setCommentErrors(err),
             onFinish: () => setCommentProcessing(false),
         });
     };
+
+    const visibleComments = comments.slice(0, visibleCount);
+    const hasMore = comments.length > visibleCount;
+    const remainingCount = comments.length - visibleCount;
 
     return (
         <PublicLayout>
@@ -174,22 +204,29 @@ export default function Show({ tour, comments = [] }) {
                                 {/* Comments List */}
                                 {comments.length > 0 ? (
                                     <div className="space-y-4 mb-6">
-                                        {comments.map((comment) => (
+                                        {visibleComments.map((comment) => (
                                             <div key={comment.id} className="border-b border-gray-100 pb-4 last:border-0 last:pb-0">
                                                 <div className="flex items-center gap-2 mb-2">
-                                                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                                                        <span className="text-blue-600 text-sm font-bold">
-                                                            {comment.user?.name ? comment.user.name.charAt(0) : '?'}
-                                                        </span>
-                                                    </div>
+                                                    <CommentAvatar user={comment.user} />
                                                     <div>
                                                         <span className="text-sm font-medium text-gray-800">{comment.user?.name || 'کاربر'}</span>
-                                                        <span className="text-xs text-gray-400 mr-2">{comment.created_at}</span>
+                                                        <span className="text-xs text-gray-400 mr-2">{comment.created_at_jalali || comment.created_at}</span>
                                                     </div>
                                                 </div>
                                                 <p className="text-gray-600 text-sm leading-relaxed pr-10">{comment.content}</p>
                                             </div>
                                         ))}
+
+                                        {/* Show More Button */}
+                                        {hasMore && (
+                                            <button
+                                                type="button"
+                                                onClick={() => setVisibleCount(prev => prev + 5)}
+                                                className="w-full text-center text-sm text-blue-600 hover:text-blue-700 font-medium py-2 rounded-lg hover:bg-blue-50 transition"
+                                            >
+                                                نمایش {remainingCount > 5 ? '۵' : remainingCount} نظر بعدی
+                                            </button>
+                                        )}
                                     </div>
                                 ) : (
                                     <p className="text-gray-400 text-sm text-center py-4">هنوز نظری ثبت نشده است. اولین نفر باشید!</p>

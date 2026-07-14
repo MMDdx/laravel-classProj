@@ -47,6 +47,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Booking::class);
     }
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
 
     protected function casts(): array
     {
