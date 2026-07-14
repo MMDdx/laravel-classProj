@@ -5,6 +5,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Morilog\Jalali\Jalalian;
 
 class Tour extends Model
 {
@@ -55,6 +56,32 @@ class Tour extends Model
         return substr($this->description, 0, 30)."...";
     }
 
+
+    protected $appends = ['start_date_jalali', 'end_date_jalali'];
+
+    public function getStartDateJalaliAttribute(): string
+    {
+        try {
+            $date = $this->start_date instanceof \Carbon\Carbon
+                ? $this->start_date
+                : \Carbon\Carbon::parse($this->start_date);
+            return Jalalian::fromDateTime($date)->format('d %B %Y');
+        } catch (\Exception $e) {
+            return $this->start_date ?? '';
+        }
+    }
+
+    public function getEndDateJalaliAttribute(): string
+    {
+        try {
+            $date = $this->end_date instanceof \Carbon\Carbon
+                ? $this->end_date
+                : \Carbon\Carbon::parse($this->end_date);
+            return Jalalian::fromDateTime($date)->format('d %B %Y');
+        } catch (\Exception $e) {
+            return $this->end_date ?? '';
+        }
+    }
 
     public function getRouteKeyName(): string
     {

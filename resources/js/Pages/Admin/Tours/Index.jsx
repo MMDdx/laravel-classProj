@@ -1,6 +1,7 @@
 import { router, usePage, Link } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import Pagination from '@/Components/Pagination';
+import JalaliDateInput from '@/Components/JalaliDateInput';
 
 export default function AdminToursIndex({ tours }) {
     const { flash } = usePage().props || {};
@@ -42,6 +43,7 @@ export default function AdminToursIndex({ tours }) {
                                     <tr>
                                         <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">عنوان</th>
                                         <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">قیمت</th>
+                                        <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">تاریخ شروع</th>
                                         <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">موقعیت</th>
                                         <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">ظرفیت</th>
                                         <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">وضعیت</th>
@@ -53,6 +55,9 @@ export default function AdminToursIndex({ tours }) {
                                         <tr key={tour.id}>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm">{tour.title}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm">{Number(tour.price).toLocaleString()} تومان</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm">
+                                                {tour.start_date_jalali || tour.start_date}
+                                            </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm">{tour.location}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm">{tour.max_capacity}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm">

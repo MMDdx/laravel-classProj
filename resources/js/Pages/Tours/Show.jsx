@@ -150,13 +150,13 @@ export default function Show({ tour, comments = [] }) {
                                 {tour.start_date && (
                                     <div className="bg-purple-50 rounded-xl p-4 text-center">
                                         <p className="text-sm text-purple-600 mb-1">تاریخ شروع</p>
-                                        <p className="text-base font-bold text-purple-700 leading-tight">{tour.start_date}</p>
+                                        <p className="text-base font-bold text-purple-700 leading-tight">{tour.start_date_jalali || tour.start_date}</p>
                                     </div>
                                 )}
                                 {tour.end_date && (
                                     <div className="bg-orange-50 rounded-xl p-4 text-center">
                                         <p className="text-sm text-orange-600 mb-1">تاریخ پایان</p>
-                                        <p className="text-base font-bold text-orange-700 leading-tight">{tour.end_date}</p>
+                                        <p className="text-base font-bold text-orange-700 leading-tight">{tour.end_date_jalali || tour.end_date}</p>
                                     </div>
                                 )}
                             </div>

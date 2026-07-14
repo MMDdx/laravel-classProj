@@ -36,7 +36,7 @@ export default function BookingsIndex({ bookings }) {
                                             <td className="px-6 py-4">{b.number_of_people}</td>
                                             <td className="px-6 py-4">{Number(b.total_price).toLocaleString()} تومان</td>
                                             <td className="px-6 py-4"><span className={statusColor(b.status)}>{statusLabel(b.status)}</span></td>
-                                            <td className="px-6 py-4">{b.booking_date}</td>
+                                            <td className="px-6 py-4">{b.booking_date_jalali || b.booking_date}</td>
                                             <td className="px-6 py-4">
                                                 <Link href={route('bookings.show', b)} className="text-indigo-600 hover:underline">جزئیات</Link>
                                                 {b.status === 'pending' && (

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Morilog\Jalali\Jalalian;
 
 class Booking extends Model
 {
@@ -31,5 +32,16 @@ class Booking extends Model
     public function tour()
     {
         return $this->belongsTo(Tour::class);
+    }
+
+    protected $appends = ['booking_date_jalali'];
+
+    public function getBookingDateJalaliAttribute(): string
+    {
+        try {
+            return Jalalian::fromDateTime($this->booking_date)->format('d %B %Y - H:i');
+        } catch (\Exception $e) {
+            return $this->booking_date ? $this->booking_date->format('Y/m/d H:i') : '';
+        }
     }
 }

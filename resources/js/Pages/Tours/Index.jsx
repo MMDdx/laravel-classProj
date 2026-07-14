@@ -1,6 +1,7 @@
 import PublicLayout from '@/Layouts/PublicLayout';
 import { Link, useForm, router } from '@inertiajs/react';
 import { useState } from 'react';
+import JalaliDateInput from '@/Components/JalaliDateInput';
 
 export default function ToursIndex({ tours, filters }) {
     const { data, setData, get } = useForm({
@@ -80,16 +81,18 @@ export default function ToursIndex({ tours, filters }) {
                                     </div>
                                 </div>
                                 <div className="mb-4">
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">از تاریخ شروع</label>
-                                    <input type="date" value={data.start_date}
-                                           onChange={e => setData('start_date', e.target.value)}
-                                           className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" />
+                                    <JalaliDateInput
+                                        label="از تاریخ شروع"
+                                        value={data.start_date}
+                                        onChange={(val) => setData('start_date', val)}
+                                    />
                                 </div>
                                 <div className="mb-4">
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">تا تاریخ پایان</label>
-                                    <input type="date" value={data.end_date}
-                                           onChange={e => setData('end_date', e.target.value)}
-                                           className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" />
+                                    <JalaliDateInput
+                                        label="تا تاریخ پایان"
+                                        value={data.end_date}
+                                        onChange={(val) => setData('end_date', val)}
+                                    />
                                 </div>
                                 <div className="mb-4">
                                     <label className="block text-sm font-medium text-gray-700 mb-1">مرتب‌سازی</label>

@@ -1,5 +1,6 @@
 import { useForm, usePage, Link } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import JalaliDateInput from '@/Components/JalaliDateInput';
 
 export default function AdminToursCreate() {
     const { errors } = usePage().props;
@@ -79,28 +80,22 @@ export default function AdminToursCreate() {
                                         />
                                         {errors.max_capacity && <p className="text-red-500 text-xs mt-1">{errors.max_capacity}</p>}
                                     </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">تاریخ شروع</label>
-                                        <input
-                                            type="date"
-                                            value={data.start_date}
-                                            onChange={(e) => setData('start_date', e.target.value)}
-                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                                            required
-                                        />
-                                        {errors.start_date && <p className="text-red-500 text-xs mt-1">{errors.start_date}</p>}
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">تاریخ پایان</label>
-                                        <input
-                                            type="date"
-                                            value={data.end_date}
-                                            onChange={(e) => setData('end_date', e.target.value)}
-                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                                            required
-                                        />
-                                        {errors.end_date && <p className="text-red-500 text-xs mt-1">{errors.end_date}</p>}
-                                    </div>
+                                    <JalaliDateInput
+                                        label="تاریخ شروع"
+                                        value={data.start_date}
+                                        onChange={(val) => setData('start_date', val)}
+                                        className="mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                        required
+                                        error={errors.start_date}
+                                    />
+                                    <JalaliDateInput
+                                        label="تاریخ پایان"
+                                        value={data.end_date}
+                                        onChange={(val) => setData('end_date', val)}
+                                        className="mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                        required
+                                        error={errors.end_date}
+                                    />
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700">آدرس تصویر (URL)</label>
                                         <input
