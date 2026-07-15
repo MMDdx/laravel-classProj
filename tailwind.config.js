@@ -18,5 +18,8 @@ export default {
         },
     },
 
+    fontFamily: {
+        sans: ['Vazirmatn', 'Tahoma', 'system-ui', 'sans-serif'],
+    },
     plugins: [forms],
 };
