@@ -20,30 +20,31 @@ class BookingController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'tour_id' => 'required|exists:tours,id',
             'number_of_people' => 'required|integer|min:1',
-            'total_price' => 'required|numeric',
         ]);
 
-        $tour = Tour::findOrFail($request->tour_id);
+        $tour = Tour::findOrFail($validated['tour_id']);
 
         // Check capacity
-        if ($request->number_of_people > $tour->remaining_capacity) {
-            return back()->withErrors(['number_of_people' => 'تعداد نفرات بیشتر از ظرفیت باقیمانده تور است. (ظرفیت باقیمانده: ' . $tour->remaining_capacity . ' نفر)']);
+        if ($validated['number_of_people'] > $tour->remaining_capacity) {
+            return back()->withErrors([
+                'number_of_people' => 'تعداد نفرات بیشتر از ظرفیت باقیمانده است. (ظرفیت: ' . $tour->remaining_capacity . ' نفر)'
+            ]);
         }
 
-        // Create booking with status 'confirmed'
+        $totalPrice = $tour->price * $validated['number_of_people'];
+
         $booking = auth()->user()->bookings()->create([
-            'tour_id' => $request->tour_id,
-            'number_of_people' => $request->number_of_people,
-            'total_price' => $request->total_price,
+            'tour_id' => $validated['tour_id'],
+            'number_of_people' => $validated['number_of_people'],
+            'total_price' => $totalPrice,
             'status' => 'confirmed',
             'booking_date' => now(),
         ]);
 
-        // Reduce remaining capacity
-        $tour->decrement('remaining_capacity', $request->number_of_people);
+        $tour->decrement('remaining_capacity', $validated['number_of_people']);
 
         return redirect()->route('bookings.show', $booking)->with('success', 'رزرو شما با موفقیت انجام شد.');
     }
