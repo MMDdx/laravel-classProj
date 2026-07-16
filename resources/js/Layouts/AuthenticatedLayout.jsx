@@ -70,7 +70,12 @@ export default function AuthenticatedLayout({ header, children }) {
                                 داشبورد
                             </Link>
                             {!user?.is_admin && (
-                                <Link href={route('bookings.index')}>رزروهای من</Link>
+                                <Link
+                                    href={route('bookings.index')}
+                                    className="text-sm font-medium text-blue-100 hover:text-white hover:bg-blue-800 px-3 py-2 rounded-lg transition"
+                                >
+                                    رزروهای من
+                                </Link>
                             )}
 
                             {user?.is_admin && (
@@ -140,17 +145,19 @@ export default function AuthenticatedLayout({ header, children }) {
                             >
                                 داشبورد
                             </Link>
-                            <Link
-                                href={route('bookings.index')}
-                                className="block text-sm font-medium text-blue-100 hover:text-white hover:bg-blue-800 px-3 py-2 rounded-lg transition"
-                                onClick={() => setMobileOpen(false)}
-                            >
-                                رزروهای من
-                            </Link>
+                            {!user?.is_admin && (
+                                <Link
+                                    href={route('bookings.index')}
+                                    className="block text-sm font-medium text-blue-100 hover:text-white hover:bg-blue-800 px-3 py-2 rounded-lg transition"
+                                    onClick={() => setMobileOpen(false)}
+                                >
+                                    رزروهای من
+                                </Link>
+                            )}
                             {user?.is_admin && (
                                 <Link
-                                    href={route('admin.users.index')}
-                                    className="block text-sm font-medium text-amber-300 hover:bg-blue-800 px-3 py-2 rounded-lg transition"
+                                    href={route('admin.tours.index')}
+                                    className="block text-sm font-medium text-amber-300 hover:text-amber-200 hover:bg-blue-800 px-3 py-2 rounded-lg transition"
                                     onClick={() => setMobileOpen(false)}
                                 >
                                     پنل مدیریت

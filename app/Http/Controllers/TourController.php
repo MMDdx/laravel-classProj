@@ -95,16 +95,25 @@ class TourController extends Controller
      */
     public function show(Tour $tour)
     {
-        $comments = $tour->comments()
-            ->with('user')
-            ->latest()
-            ->get();
+        $userBooking = null;
+
+        if (auth()->check()) {
+            $userBooking = $tour->bookings()
+                ->where('user_id', auth()->id())
+                ->where('status', '!=', 'cancelled')
+                ->first();
+        }
 
         return Inertia::render('Tours/Show', [
             'tour' => $tour,
-            'comments' => $comments,
             'canBook' => auth()->check(),
             'user' => auth()->user(),
+            'userBooking' => $userBooking ? [
+                'id' => $userBooking->id,
+                'status' => $userBooking->status,
+                'number_of_people' => $userBooking->number_of_people,
+                'total_price' => $userBooking->total_price,
+            ] : null,
         ]);
     }
 

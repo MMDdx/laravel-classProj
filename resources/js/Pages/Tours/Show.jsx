@@ -27,7 +27,7 @@ function CommentAvatar({ user, size = 'w-8 h-8', textSize = 'text-sm' }) {
     );
 }
 
-export default function Show({ tour, comments = [] }) {
+export default function Show({ tour, comments = [], userBooking = null }) {
     const { auth } = usePage().props;
     const isLoggedIn = !!auth.user;
 
@@ -273,6 +273,7 @@ export default function Show({ tour, comments = [] }) {
                     </div>
 
                     {/* Booking Sidebar */}
+                    {/* Booking Sidebar */}
                     <div className="lg:col-span-1">
                         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sticky top-24">
                             <h3 className="text-lg font-bold text-gray-800 mb-4">رزرو تور</h3>
@@ -284,6 +285,29 @@ export default function Show({ tour, comments = [] }) {
                             ) : (tour.remaining_capacity != null && tour.remaining_capacity <= 0) ? (
                                 <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 text-center">
                                     <p className="text-yellow-600 font-medium">ظرفیت این تور تکمیل شده است.</p>
+                                </div>
+                            ) : userBooking ? (
+                                <div className="space-y-4">
+                                    <div className="bg-green-50 border border-green-200 rounded-xl p-4 text-center space-y-3">
+                                        <div className="flex justify-center">
+                                            <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                                                <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <p className="text-green-700 font-bold text-sm">شما این تور را رزرو کرده‌اید!</p>
+                                        <div className="text-green-600 text-sm space-y-1">
+                                            <p>{userBooking.number_of_people} نفر</p>
+                                            <p>{Number(userBooking.total_price).toLocaleString('fa-IR')} تومان</p>
+                                        </div>
+                                    </div>
+                                    <Link
+                                        href={route('bookings.show', userBooking.id)}
+                                        className="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg transition text-sm"
+                                    >
+                                        مشاهده جزئیات رزرو
+                                    </Link>
                                 </div>
                             ) : isLoggedIn ? (
                                 <form onSubmit={handleBookingSubmit} className="space-y-4">

@@ -105,7 +105,7 @@ export default function BookingShow({ booking }) {
                         بازگشت به رزروهای من
                     </Link>
 
-                    {booking.status === 'pending' && (
+                    {booking.status === 'pending' || booking.status === "" && (
                         <button
                             onClick={cancel}
                             className="bg-red-50 hover:bg-red-100 text-red-600 text-sm font-medium py-2 px-4 rounded-lg border border-red-200 transition"

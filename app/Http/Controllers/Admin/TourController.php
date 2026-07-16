@@ -13,7 +13,9 @@ class TourController extends Controller
     public function index()
     {
         $tours = Tour::latest()->paginate(15);
-        return Inertia::render('Admin/Tours/Index', compact('tours'));
+        return Inertia::render('Admin/Tours/Index', [
+            'tours' => $tours,
+        ]);
     }
 
     public function create()
@@ -44,7 +46,9 @@ class TourController extends Controller
 
     public function edit(Tour $tour)
     {
-        return Inertia::render('Admin/Tours/Edit', compact('tour'));
+        return Inertia::render('Admin/Tours/Edit', [
+            'tour' => $tour,
+        ]);
     }
 
     public function update(Request $request, Tour $tour)
@@ -60,13 +64,6 @@ class TourController extends Controller
             'image_url' => 'nullable|url',
             'is_active' => 'boolean',
         ]);
-
-        if (isset($validated['max_capacity']) && $validated['max_capacity'] != $tour->max_capacity) {
-            $difference = $validated['max_capacity'] - $tour->max_capacity;
-            $tour->remaining_capacity += $difference;
-            $tour->max_capacity = $validated['max_capacity'];
-            $tour->save();
-        }
 
         $tour->update($validated);
 

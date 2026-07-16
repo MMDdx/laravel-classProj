@@ -52,7 +52,7 @@ export default function AdminToursIndex({ tours }) {
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200">
                                     {tours.data.map((tour) => (
-                                        <tr key={tour.id}>
+                                        <tr key={tour}>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm">{tour.title}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm">{Number(tour.price).toLocaleString()} تومان</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm">
@@ -72,7 +72,7 @@ export default function AdminToursIndex({ tours }) {
                                                     ویرایش
                                                 </Link>
                                                 <button
-                                                    onClick={() => destroy(tour.id)}
+                                                    onClick={() => destroy(tour)}
                                                     className="text-red-600 hover:text-red-900"
                                                 >
                                                     حذف

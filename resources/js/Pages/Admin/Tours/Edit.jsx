@@ -19,7 +19,7 @@ export default function AdminToursEdit({ tour }) {
 
     const submit = (e) => {
         e.preventDefault();
-        put(route('admin.tours.update', tour.id));
+        put(route('admin.tours.update', tour));
     };
 
     return (
