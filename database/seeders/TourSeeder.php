@@ -20,7 +20,7 @@ class TourSeeder extends Seeder
                 'max_capacity' => 25,
                 'remaining_capacity' => 25,  // ← ADD THIS
                 'location' => 'اصفهان، شیراز، یزد',
-                'image_url' => 'https://images.unsplash.com/photo-1548013146-72479768bada',
+                'image_url' => 'images/tours/esfahan-tour.jpg',
                 'is_active' => true,
             ],
             [
@@ -32,7 +32,7 @@ class TourSeeder extends Seeder
                 'max_capacity' => 30,
                 'remaining_capacity' => 30,  // ← ADD THIS
                 'location' => 'استانبول، کاپادوکیا',
-                'image_url' => 'https://images.unsplash.com/photo-1527838832700-5054e4898686',
+                'image_url' => 'images/tours/istanbul-tour.jpg',
                 'is_active' => true,
             ],
             [
@@ -44,7 +44,7 @@ class TourSeeder extends Seeder
                 'max_capacity' => 40,
                 'remaining_capacity' => 40,  // ← ADD THIS
                 'location' => 'جزیره کیش',
-                'image_url' => 'https://images.unsplash.com/photo-1586500036702-6bcac6b3bdd1',
+                'image_url' => 'images/tours/kish-tour.jpg',
                 'is_active' => true,
             ],
             [
@@ -56,7 +56,7 @@ class TourSeeder extends Seeder
                 'max_capacity' => 20,
                 'remaining_capacity' => 20,  // ← ADD THIS
                 'location' => 'دبی، امارات',
-                'image_url' => 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c',
+                'image_url' => 'images/tours/dubai-tour.jpg',
                 'is_active' => true,
             ],
             [
@@ -68,7 +68,7 @@ class TourSeeder extends Seeder
                 'max_capacity' => 35,
                 'remaining_capacity' => 35,  // ← ADD THIS
                 'location' => 'گرگان، ساری، رامسر',
-                'image_url' => 'https://images.unsplash.com/photo-1584128071033-c571ec12614c',
+                'image_url' => 'images/tours/shoaml-tour.jpg',
                 'is_active' => true,
             ],
             [
@@ -80,7 +80,7 @@ class TourSeeder extends Seeder
                 'max_capacity' => 25,
                 'remaining_capacity' => 25,  // ← ADD THIS
                 'location' => 'آنتالیا، ترکیه',
-                'image_url' => 'https://images.unsplash.com/photo-1582472164424-73b2ff0e8000',
+                'image_url' => 'images/tours/antalya-tour.jpg',
                 'is_active' => true,
             ],
             [
@@ -92,7 +92,7 @@ class TourSeeder extends Seeder
                 'max_capacity' => 45,
                 'remaining_capacity' => 45,  // ← ADD THIS
                 'location' => 'مشهد',
-                'image_url' => 'https://images.unsplash.com/photo-1621944190310-e3cca1564fd6',
+                'image_url' => 'images/tours/mashhad-tour.jpg',
                 'is_active' => true,
             ],
             [
@@ -104,7 +104,7 @@ class TourSeeder extends Seeder
                 'max_capacity' => 18,
                 'remaining_capacity' => 18,  // ← ADD THIS
                 'location' => 'بانکوک، پوکت، تایلند',
-                'image_url' => 'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a',
+                'image_url' => 'images/tours/antalya-tour.jpg',
                 'is_active' => false,
             ],
         ];

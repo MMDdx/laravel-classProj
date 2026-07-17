@@ -47,7 +47,7 @@ class TourController extends Controller
     public function edit(Tour $tour)
     {
         return Inertia::render('Admin/Tours/Edit', [
-            'tour' => $tour,
+            'tours' => $tour,
         ]);
     }
 

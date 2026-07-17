@@ -12,7 +12,7 @@ class CommentController extends Controller
     /**
      * Store a newly created comment.
      */
-    public function store(Request $request, Tour $tour)  // ← tour از URL میاد
+    public function store(Request $request, Tour $tour)  // ← tours از URL میاد
     {
         $validated = $request->validate([
             'content' => 'required|string|max:1000',    // ← فقط content

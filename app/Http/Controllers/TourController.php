@@ -59,7 +59,7 @@ class TourController extends Controller
     }
 
     /**
-     * Show the form for creating a new tour (web view).
+     * Show the form for creating a new tours (web view).
      */
     public function create()
     {
@@ -91,7 +91,7 @@ class TourController extends Controller
     }
 
     /**
-     * Display the specified tour.
+     * Display the specified tours.
      */
     public function show(Tour $tour)
     {
@@ -105,7 +105,7 @@ class TourController extends Controller
         }
 
         return Inertia::render('Tours/Show', [
-            'tour' => $tour,
+            'tours' => $tour,
             'canBook' => auth()->check(),
             'user' => auth()->user(),
             'userBooking' => $userBooking ? [

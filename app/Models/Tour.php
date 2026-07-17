@@ -25,13 +25,13 @@ class Tour extends Model
         'remaining_capacity',
     ];
 
-    // Relationship: A tour has many bookings
+    // Relationship: A tours has many bookings
     public function bookings()
     {
         return $this->hasMany(Booking::class);
     }
 
-    // Relationship: A tour has many comments
+    // Relationship: A tours has many comments
     public function comments()
     {
         return $this->hasMany(Comment::class);

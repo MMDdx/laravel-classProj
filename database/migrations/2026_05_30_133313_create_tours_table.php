@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('tours', function (Blueprint $table) {
             $table->id();                      // auto-incrementing ID
-            $table->string('title');           // tour title
+            $table->string('title');           // tours title
             $table->string('slug')->unique();  // ← add this line
             $table->text('description');       // description
             $table->decimal('price', 10, 2);   // price
