@@ -16,7 +16,7 @@ class DashboardController extends Controller
             'totalBookings' => $user->bookings()->count(),
             'confirmedBookings' => $user->bookings()->where('status', 'confirmed')->count(),
             'activeToursCount' => Tour::active()->count(),
-            'recentBookings' => $user->bookings()->with('tours')->latest()->take(5)->get(),
+            'recentBookings' => $user->bookings()->with('tour')->latest()->take(5)->get(),
             'userName' => $user->name,
         ]);
     }

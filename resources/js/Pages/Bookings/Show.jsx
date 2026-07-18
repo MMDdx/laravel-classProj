@@ -22,7 +22,7 @@ export default function BookingShow({ booking }) {
                     {booking.tour.image_url && (
                         <div className="h-48 bg-gray-200">
                             <img
-                                src={booking.tour.image_url}
+                                src={'/' + booking.tour.image_url}
                                 alt={booking.tour.title}
                                 className="w-full h-full object-cover"
                             />
