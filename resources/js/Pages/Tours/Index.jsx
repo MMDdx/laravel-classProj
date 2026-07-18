@@ -147,7 +147,7 @@ export default function ToursIndex({ tours, filters }) {
                                                 <div className="flex justify-between items-center mt-3">
                                                     <span className="text-blue-600 font-bold">{Number(tour.price).toLocaleString()} تومان</span>
                                                 </div>
-                                                <Link href={route('tours.show', tour)}
+                                                <Link href={route('tours.show', tour.slug)}
                                                       className="mt-4 inline-block w-full text-center bg-blue-50 text-blue-700 py-2 rounded-lg font-medium hover:bg-blue-100 transition">
                                                     مشاهده جزئیات
                                                 </Link>

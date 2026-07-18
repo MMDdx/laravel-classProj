@@ -105,7 +105,7 @@ class TourController extends Controller
         }
 
         return Inertia::render('Tours/Show', [
-            'tours' => $tour,
+            'tour' => $tour,
             'canBook' => auth()->check(),
             'user' => auth()->user(),
             'userBooking' => $userBooking ? [

@@ -101,7 +101,7 @@ export default function Show({ tour, comments = [], userBooking = null }) {
                 {/* Hero Image */}
                 {tour.image_url && (
                     <div className="h-64 md:h-80 bg-gray-200 rounded-2xl overflow-hidden mb-8 relative">
-                        <img src={tour.image_url} alt={tour.title} className="w-full h-full object-cover" />
+                        <img src={'/' + tour.image_url} alt={tour.title} className="w-full h-full object-cover" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                         <div className="absolute bottom-6 right-6 left-6">
                             <h1 className="text-3xl md:text-4xl font-bold text-white">{tour.title}</h1>

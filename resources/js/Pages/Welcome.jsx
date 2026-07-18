@@ -68,7 +68,7 @@ export default function Welcome({ popularTours }) {
                                         <span className="text-indigo-600 font-bold">{Number(tour.price).toLocaleString()} تومان</span>
                                     </div>
                                     <p className="text-gray-500 text-sm mt-2 line-clamp-2">{tour.description}</p>
-                                    <Link href={route('tours.show', tour)}
+                                    <Link href={route('tours.show', tour.slug)}
                                           className="mt-4 inline-block w-full text-center bg-indigo-100 text-indigo-700 py-2 rounded-lg font-medium hover:bg-indigo-200 transition">
                                         جزئیات و رزرو
                                     </Link>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TourController;
 use App\Http\Controllers\BookingController;
@@ -24,8 +25,8 @@ Route::get('/', function () {
 });
 
 Route::get('/tours', [TourController::class, 'index'])->name('tours.index');
-Route::get('/tours/{tours}', [TourController::class, 'show'])->name('tours.show');
-Route::post('/tours/{tours}/comments', [App\Http\Controllers\CommentController::class, 'store'])->name('comments.store');
+Route::get('/tours/{tour}', [TourController::class, 'show'])->name('tours.show');
+Route::post('/tours/{tour}/comments', [CommentController::class, 'store'])->name('comments.store');
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('users', UserController::class)->only(['index', 'destroy']);
