@@ -117,7 +117,7 @@ export default function AdminToursEdit({ tour }) {
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700">آدرس تصویر (URL)</label>
                                         <input
-                                            type="url"
+                                            type="text"
                                             value={data.image_url}
                                             onChange={(e) => setData('image_url', e.target.value)}
                                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"

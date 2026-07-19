@@ -33,7 +33,7 @@ class TourController extends Controller
             'end_date' => 'required|date|after:start_date',
             'max_capacity' => 'required|integer|min:1',
             'location' => 'required|string',
-            'image_url' => 'nullable|url',
+            'image_url' => 'nullable|string|max:2048',
             'is_active' => 'boolean',
         ]);
 
@@ -47,7 +47,7 @@ class TourController extends Controller
     public function edit(Tour $tour)
     {
         return Inertia::render('Admin/Tours/Edit', [
-            'tours' => $tour,
+            'tour' => $tour,
         ]);
     }
 
@@ -61,7 +61,7 @@ class TourController extends Controller
             'end_date' => 'required|date|after:start_date',
             'max_capacity' => 'required|integer|min:1',
             'location' => 'required|string',
-            'image_url' => 'nullable|url',
+            'image_url' => 'nullable|string|max:2048',
             'is_active' => 'boolean',
         ]);
 
