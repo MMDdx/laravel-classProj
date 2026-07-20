@@ -15,6 +15,7 @@ class Comment extends Model
         'user_id',
         'tour_id',
         'content',
+        'is_approved'
     ];
 
     // این باعث میشه created_at_jalali خودکار به فرانت‌اند فرستاده بشه

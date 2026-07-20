@@ -9,6 +9,7 @@ use App\Models\Tour;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Admin\TourController as AdminTourController;
+use App\Http\Controllers\Admin\CommentController as AdminCommentController;
 
 require __DIR__.'/auth.php';
 
@@ -32,6 +33,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('users', UserController::class)->only(['index', 'destroy']);
     Route::resource('tours', AdminTourController::class);
     Route::resource('bookings', \App\Http\Controllers\Admin\BookingController::class)->except(['create', 'store', 'edit']);
+
+    Route::get('comments', [AdminCommentController::class, 'index'])->name('comments.index');
+    Route::patch('comments/{comment}/approve', [AdminCommentController::class, 'approve'])->name('comments.approve');
+    Route::delete('comments/{comment}', [AdminCommentController::class, 'destroy'])->name('comments.destroy');
 });
 
 Route::middleware(['auth'])->group(function () {

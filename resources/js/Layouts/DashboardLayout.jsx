@@ -48,6 +48,10 @@ export default function DashboardLayout({ children, header }) {
                                   className="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition">
                                 <i className="fas fa-clipboard-list w-5"></i> <span>مدیریت رزروها</span>
                             </Link>
+                            <Link href={route('admin.comments.index')}
+                                  className="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition">
+                                <i className="fas fa-comments w-5"></i> <span>مدیریت نظرات</span>
+                            </Link>
                         </div>
                     )}
                 </nav>

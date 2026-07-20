@@ -18,6 +18,7 @@ class DashboardController extends Controller
             'activeToursCount' => Tour::active()->count(),
             'recentBookings' => $user->bookings()->with('tour')->latest()->take(5)->get(),
             'userName' => $user->name,
+            'is_admin' => auth()->user()->is_admin,
         ]);
     }
 }

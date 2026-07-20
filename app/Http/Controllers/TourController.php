@@ -96,18 +96,32 @@ class TourController extends Controller
     public function show(Tour $tour)
     {
         $userBooking = null;
+        $myPendingComment = null;
+
+        $comments = $tour->comments()
+            ->where('is_approved', true)
+            ->with('user')
+            ->latest()
+            ->get();
 
         if (auth()->check()) {
             $userBooking = $tour->bookings()
                 ->where('user_id', auth()->id())
                 ->where('status', '!=', 'cancelled')
                 ->first();
+
+            // ← این ۵ خط رو اضافه کن
+            $myPendingComment = $tour->comments()
+                ->where('user_id', auth()->id())
+                ->where('is_approved', false)
+                ->first();
         }
 
         return Inertia::render('Tours/Show', [
             'tour' => $tour,
             'canBook' => auth()->check(),
-            'comments' => $tour->comments()->with('user')->latest()->get(),
+            'comments' => $comments,
+            'myPendingComment' => $myPendingComment ? $myPendingComment->content : null,  // ← این خط رو اضافه کن
             'user' => auth()->user(),
             'userBooking' => $userBooking ? [
                 'id' => $userBooking->id,

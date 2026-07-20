@@ -27,7 +27,7 @@ function CommentAvatar({ user, size = 'w-8 h-8', textSize = 'text-sm' }) {
     );
 }
 
-export default function Show({ tour, comments = [], userBooking = null }) {
+export default function Show({ tour, comments = [], userBooking = null, myPendingComment = null }) {
     const { auth } = usePage().props;
     const isLoggedIn = !!auth.user;
 
@@ -256,7 +256,13 @@ export default function Show({ tour, comments = [], userBooking = null }) {
                                         >
                                             {commentProcessing ? 'در حال ارسال...' : 'ارسال نظر'}
                                         </button>
+                                        {myPendingComment && (
+                                            <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-4 mt-4 text-yellow-800 text-sm">
+                                                ⚠️ نظر شما ثبت شد و پس از تأیید مدیر نمایش داده می‌شود.
+                                            </div>
+                                        )}
                                     </form>
+
                                 ) : (
                                     <div className="text-center bg-gray-50 rounded-xl p-4">
                                         <p className="text-sm text-gray-500">

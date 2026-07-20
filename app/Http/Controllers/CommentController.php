@@ -12,22 +12,18 @@ class CommentController extends Controller
     /**
      * Store a newly created comment.
      */
-    public function store(Request $request, Tour $tour)  // ← tours از URL میاد
+    public function store(Request $request, Tour $tour)
     {
         $validated = $request->validate([
-            'content' => 'required|string|max:1000',    // ← فقط content
+            'content' => 'required|string|max:1000',
         ]);
-        $comment = Comment::create([
-            'user_id' => Auth::id(),
-            'tour_id' => $tour->id,
+
+        $tour->comments()->create([
+            'user_id' => auth()->id(),
             'content' => $validated['content'],
+            'is_approved' => false,  // ← این خط اضافه بشه
         ]);
 
-        // Reload with user relationship
-        $comment->load('user');
-
-        return redirect()
-            ->back()
-            ->with('success', 'نظر شما با موفقیت ثبت شد.');
+        return redirect()->back()->with('success', 'نظر شما ثبت شد و پس از تأیید مدیر نمایش داده می‌شود.');
     }
 }
