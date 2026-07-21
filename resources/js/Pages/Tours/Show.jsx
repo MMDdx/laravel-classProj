@@ -55,14 +55,8 @@ export default function Show({ tour, comments = [], userBooking = null, myPendin
 
     const handleBookingSubmit = (e) => {
         e.preventDefault();
-        setProcessing(true);
-        router.post(route('bookings.store', { tour: tour.id }), {
-            ...form,
-            tour_id: tour.id,
-        }, {
-            onSuccess: () => { setForm({ number_of_people: 1 }); setErrors({}); },
-            onError: (err) => setErrors(err),
-            onFinish: () => setProcessing(false),
+        router.get(route('payment.show', tour.slug), {
+            number_of_people: form.number_of_people,
         });
     };
 

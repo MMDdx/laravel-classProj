@@ -89,6 +89,12 @@ export default function BookingShow({ booking }) {
                                     {booking.booking_date_jalali || booking.booking_date}
                                 </p>
                             </div>
+                            {booking.tracking_code && (
+                                <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3">
+                                    <span className="text-sm text-indigo-600">کد پیگیری: </span>
+                                    <span className="font-bold text-indigo-800 font-mono">{booking.tracking_code}</span>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TourController;
 use App\Http\Controllers\BookingController;
@@ -47,4 +48,8 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('bookings', BookingController::class);
     Route::patch('bookings/{bookings}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
+
+    // payment
+    Route::get('/payment/{tour}', [PaymentController::class, 'show'])->name('payment.show');
+    Route::post('/payment/{tour}', [PaymentController::class, 'pay'])->name('payment.pay');
 });
