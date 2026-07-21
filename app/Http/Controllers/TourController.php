@@ -110,7 +110,7 @@ class TourController extends Controller
                 ->where('status', '!=', 'cancelled')
                 ->first();
 
-            // ← این ۵ خط رو اضافه کن
+
             $myPendingComment = $tour->comments()
                 ->where('user_id', auth()->id())
                 ->where('is_approved', false)

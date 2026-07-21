@@ -37,7 +37,7 @@ class PaymentController extends Controller
             return back()->withErrors(['general' => 'ظرفیت کافی نیست.']);
         }
 
-        // تولید شناسه رندوم
+
         $trackingCode = 'TR-' . strtoupper(Str::random(8));
 
         $totalPrice = $tour->price * $number_of_people;

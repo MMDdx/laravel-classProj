@@ -21,7 +21,7 @@ class CommentController extends Controller
         $tour->comments()->create([
             'user_id' => auth()->id(),
             'content' => $validated['content'],
-            'is_approved' => false,  // ← این خط اضافه بشه
+            'is_approved' => false,
         ]);
 
         return redirect()->back()->with('success', 'نظر شما ثبت شد و پس از تأیید مدیر نمایش داده می‌شود.');
